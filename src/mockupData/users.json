@@ -1,0 +1,30 @@
+[
+    {
+        "user_id":1,
+        "username":"user name 1",
+        "password":"password",
+        "role":10,
+        "profile_picture":"ppMale.jpg"
+    },
+    {
+        "user_id":2,
+        "username":"user name 2",
+        "password":"password",
+        "role":1,
+        "profile_picture":"ppMale.jpg"
+    },
+    {
+        "user_id":3,
+        "username":"user name 3",
+        "password":"password",
+        "role":1,
+        "profile_picture":"ppFemale.jpg"
+    },
+    {
+        "user_id":4,
+        "username":"user name 4",
+        "password":"password",
+        "role":0,
+        "profile_picture":"ppMale.jpg"
+    }
+]

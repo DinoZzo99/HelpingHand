@@ -1,0 +1,72 @@
+[
+    {
+        "category_id":1,
+        "category_name":"Wildlife conservation",
+        "service": "1"
+    },
+    {
+        "category_id":2,
+        "category_name":"Volunteer with children",
+        "service": "1"
+    },
+    {
+        "category_id":3,
+        "category_name":"Marine conservation",
+        "service": "1"
+    },
+    {
+        "category_id":4,
+        "category_name":"Teaching",
+        "service": "1"
+    },
+    {
+        "category_id":5,
+        "category_name":"Health care",
+        "service": "1"
+    },
+    {
+        "category_id":6,
+        "category_name":"Animal care",
+        "service": "1"
+    },
+    {
+        "category_id":7,
+        "category_name":"Sports",
+        "service": "1"
+    },
+    {
+        "category_id":8,
+        "category_name":"Mental health",
+        "service": "1"
+    },
+    {
+        "category_id":9,
+        "category_name":"Senior citizens services",
+        "service": "1"
+    },
+    {
+        "category_id":10,
+        "category_name":"Other",
+        "service": "1"
+    },
+    {
+        "category_id":11,
+        "category_name":"Child support",
+        "service": "0"
+    },
+    {
+        "category_id":12,
+        "category_name":"Utility bill",
+        "service": "0"
+    },
+    {
+        "category_id":13,
+        "category_name":"Food",
+        "service": "0"
+    },
+    {
+        "category_id":14,
+        "category_name":"Other",
+        "service": "0"
+    }
+]

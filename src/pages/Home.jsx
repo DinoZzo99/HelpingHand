@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles, Typography } from "@material-ui/core";
+import { makeStyles, Typography } from "@mui/styles";
 import Services from "./Services";
 
 const useStyles = makeStyles((theme)=>({

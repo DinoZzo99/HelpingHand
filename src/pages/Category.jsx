@@ -1,6 +1,6 @@
 import React from "react";
-import { makeStyles, Typography } from "@material-ui/core";
-import { Grid } from "@material-ui/core";
+import { makeStyles, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import {GetServiceCategories, GetDonationCategories} from "../fakeAPI/FakeBackend";

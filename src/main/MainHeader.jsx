@@ -1,13 +1,29 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core";
-import AppBar from '@material-ui/core/AppBar';
-import { Grid } from "@material-ui/core";
-import { Typography } from "@material-ui/core";
+import makeStyles from '@mui/styles/makeStyles';
+import AppBar from '@mui/material/AppBar';
+import { Grid } from "@mui/material";
+import { Typography } from "@mui/material";
 import logo from "../pictures/logo.png";
+
 
 const useStyles = makeStyles((theme)=>({
     appbar: {
-        backgroundColor: "#007ea7",
+        //main backgroundColor: "#007ea7",
+        [theme.breakpoints.only('xs')]: {
+            backgroundColor: "yellow",
+        },
+        [theme.breakpoints.only('sm')]: {
+            backgroundColor: "orange",
+        },
+        [theme.breakpoints.only('md')]: {
+            backgroundColor: "red",
+        },
+        [theme.breakpoints.only('lg')]: {
+            backgroundColor: "blue",
+        },
+        [theme.breakpoints.only('xl')]: {
+            backgroundColor: "darkblue",
+        },
     },
 
     logoImage:{
@@ -16,7 +32,8 @@ const useStyles = makeStyles((theme)=>({
     },
 
     title: {
-        color:"#ffffff",
+        fontFamily:"'Raleway','sans-serif'",
+        color:"white",
         fontSize:"50px",
     },
 
@@ -42,7 +59,7 @@ function MainHeader(props) {
         <AppBar position="static" className={classes.appbar}>
             <Grid container className={classes.column}>
                 <Grid container className={classes.rowStart}>
-                    <Grid xs={2}>
+                    <Grid xs={2} container className={classes.column}>
                         <img className={classes.logoImage} src={logo}/>
                     </Grid>
                     <Grid xs={4} container className={classes.rowStart}>

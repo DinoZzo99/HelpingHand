@@ -1,9 +1,10 @@
 import React from "react";
-import { makeStyles, Typography } from "@material-ui/core";
-import { Grid, Button } from "@material-ui/core";
+import { Typography } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
+import { Grid, Button } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 
-import {GetCategoryById} from "../fakeAPI/FakeBackend";
+import {GetCategoryById, GetServicesById} from "../fakeAPI/FakeBackend";
 
 const useStyles = makeStyles((theme)=>({
     column: {
@@ -51,6 +52,7 @@ const useStyles = makeStyles((theme)=>({
     containerText: {
         fontFamily:"'Raleway','sans-serif'",
         fontSize:"24px",
+        textAlign:"center"
     },
     
     titleContainer: {
@@ -69,11 +71,18 @@ function Carousel(props) {
     return(
         <Grid xs={12} container className={classes.column + " " + classes.root}>
             <Grid container className={classes.titleContainer}>
-                <Typography className={classes.title}>See more from {props.username}</Typography>
+                <Typography className={classes.title}>
+                    {
+                        props.username ? `See more from ${props.username}`
+                        : `Created Jobs`
+                    }
+                    
+                </Typography>
             </Grid>
             <Grid container className={classes.row}>
             {
-                props.services.filter(service => service.id !== props.service_id).slice(0,3).map((service, index)=>{
+                props.services.filter(service => service.job_id !== props.service_id).slice(0,3).map((serviceList, index)=>{
+                    let service = GetServicesById(serviceList.job_id)
                     let category = GetCategoryById(service.category);
 
                     return (

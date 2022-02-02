@@ -1,6 +1,7 @@
 import React from "react";
-import { makeStyles, Typography } from "@material-ui/core";
-import { Grid, Button } from "@material-ui/core";
+import { Typography } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
+import { Grid, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme)=>({
@@ -46,7 +47,7 @@ const useStyles = makeStyles((theme)=>({
         borderRadius:"200px",
         borderStyle:"solid",
         borderColor:"white",
-        [theme.breakpoints.down('lg')]: {
+        [theme.breakpoints.down('xl')]: {
             height:"80px",
         },
         [theme.breakpoints.up('lg')]: {
@@ -61,7 +62,7 @@ const useStyles = makeStyles((theme)=>({
         fontFamily:"'Raleway','sans-serif'",
         color: "white",
         backgroundColor:"#007ea7",
-        margin:"30px 0px 10px 0px",
+        marginBottom:"10px",
         "&:hover":{
             cursor:"pointer",
             backgroundColor:"#005c7a",
@@ -69,13 +70,21 @@ const useStyles = makeStyles((theme)=>({
     },
 
     infoText: {
-        marginTop:"10px",
+        fontFamily:"'Raleway','sans-serif'",
+        textAlign:"left",
+        margin:"5px 0"
+    },
+
+    infoContainer: {
+        alignItems:"flex-start",
+        padding:"10px",
     },
 }));
 
 function UserInfo(props) {
     const classes = useStyles();
     const [user, setUser] = React.useState(props.user);
+    const [viewType, setViewType] = React.useState(props.type);
 
     const navigate = useNavigate();
 
@@ -85,13 +94,19 @@ function UserInfo(props) {
                 <img src={`../material/${user.profile_picture}`} className={classes.profilePicture}/>
             </Grid>
             <Grid container className={classes.column + " " + classes.mainInfoBottom}>
-                <Typography className={classes.nametext}>{user.username}</Typography>
+                <Typography className={classes.nametext}>{user.name} {user.lastname}</Typography>
             </Grid>
             <Grid container className={classes.column}>
-                <Typography className={classes.infoText}>Location: unidentified</Typography>
-                <Typography className={classes.infoText}>Location: unidentified</Typography>
-                <Typography className={classes.infoText}>Location: unidentified</Typography>
-                <Button className={classes.btn} onClick={() => navigate(`../users/${user.user_id}`)}>view user</Button>
+                <Grid container className={classes.column + " " + classes.infoContainer}>
+                <Typography className={classes.infoText}>Username: {user.username}</Typography>
+                <Typography className={classes.infoText}>e-mail: {user.email}</Typography>
+                <Typography className={classes.infoText}>Gender: {user.gender}</Typography>
+                <Typography className={classes.infoText}>Location: {user.location}</Typography>
+                <Typography className={classes.infoText}>Status: {user.status ? "active" : "not job"}</Typography>
+                </Grid>
+                {
+                    viewType === 'service' ? <Button className={classes.btn} onClick={() => navigate(`../users/${user.id}`)}>view user</Button> : null
+                }
             </Grid>
         </Grid>
     )

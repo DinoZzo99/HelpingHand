@@ -1,14 +1,16 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core";
-import { Grid } from "@material-ui/core";
+import makeStyles from '@mui/styles/makeStyles';
+import { Grid } from "@mui/material";
 
-import WorkIcon from '@material-ui/icons/Work';
-import CreateIcon from '@material-ui/icons/Create';
-import PeopleIcon from '@material-ui/icons/People';
-import EmailIcon from '@material-ui/icons/Email';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import NotesIcon from '@material-ui/icons/Notes';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import WorkIcon from '@mui/icons-material/Work';
+import CreateIcon from '@mui/icons-material/Create';
+import PeopleIcon from '@mui/icons-material/People';
+import EmailIcon from '@mui/icons-material/Email';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import NotesIcon from '@mui/icons-material/Notes';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import SearchIcon from '@mui/icons-material/Search';
+
 import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme)=>({
@@ -86,6 +88,7 @@ function SideGrid(props) {
                 <Grid container className={classes.menuItem}><EmailIcon className={classes.icon}/>Messages</Grid>
                 <Grid container className={classes.menuItem}><WorkIcon className={classes.icon}/>Notifications</Grid>
                 <Grid container className={classes.menuItem}><WorkIcon className={classes.icon}/>Tools</Grid>
+                <Grid container className={classes.menuSubitem} onClick={() => navigate("../search")}><SearchIcon className={classes.icon}/>Search</Grid>
                 <Grid container className={classes.menuSubitem}><AddCircleIcon className={classes.icon}/>Create job</Grid>
                 <Grid container className={classes.menuSubitem}><NotesIcon className={classes.icon}/>Set status</Grid>
                 <Grid container className={classes.menuItem}><AccountCircleIcon className={classes.icon}/>My account</Grid>

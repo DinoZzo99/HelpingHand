@@ -1,7 +1,7 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
-import {createTheme, ThemeProvider} from '@material-ui/core/styles';
-import { Grid, makeStyles } from '@material-ui/core';
+import { ThemeProvider, StyledEngineProvider, createTheme } from '@mui/material/styles';
+import { Grid } from '@mui/material';
 import SideGrid from './main/SideGrid';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Home from './pages/Home';
@@ -13,6 +13,8 @@ import Contacts from './main/Contacts';
 import Category from './pages/Category';
 import Services from './pages/Services';
 import User from './pages/User';
+import Search from './pages/Search';
+import SearchResults from './pages/SearchResults';
 
 
 const theme = createTheme({
@@ -22,39 +24,32 @@ const theme = createTheme({
   },
 });
 
-const useStyles = makeStyles((theme)=>({
-  footer: {
-    position:"static",
-    left: "0",
-    bottom:"0",
-    height:"200px",
-    backgroundColor:"lightblue",
-}
-}));
-
 function App() {
   return (
-      <ThemeProvider theme={theme}>
-        <MainHeader/>
-        <Navbar/>
-        <SideGrid/>
-        <Contacts/>
-        <Grid container>
-          <Grid md = {2}></Grid>
-          <Grid md = {10}>
-              <Routes>
-                <Route path="home" element={<Home/>}/>
-                <Route path="about" element={<About/>}/>
-                <Route path="service/:id" element={<Service/>}/>
-                <Route path="categories" element={<Category/>}/>
-                <Route path="services" element={<Services/>}/>
-                <Route path="services/:id" element={<Services/>}/>
-                <Route path="my-profile" element={<User/>}/>
-                <Route path="users/:id" element={<User/>}/>
-              </Routes>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={theme}>
+          <MainHeader/>
+          <Navbar/>
+          <Contacts/>
+          <Grid xs={12}container>
+            <Grid xl={2.5} lg={2}/>
+            <Grid xl={7} lg={8} container>
+                <Routes>
+                  <Route path="home" element={<Home/>}/>
+                  <Route path="about" element={<About/>}/>
+                  <Route path="service/:id" element={<Service/>}/>
+                  <Route path="categories" element={<Category/>}/>
+                  <Route path="services" element={<Services/>}/>
+                  <Route path="services/:id" element={<Services/>}/>
+                  <Route path="my-profile" element={<User/>}/>
+                  <Route path="users/:id" element={<User/>}/>
+                  <Route path="search" element={<Search/>}/>
+                  <Route path="search/:keywords" element={<SearchResults/>}/>
+                </Routes>
+            </Grid>
           </Grid>
-        </Grid>
-      </ThemeProvider>
+        </ThemeProvider>
+      </StyledEngineProvider>
   );
 }
 

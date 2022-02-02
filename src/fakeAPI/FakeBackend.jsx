@@ -1,14 +1,18 @@
 import React from "react";
 import categories from "../mockupData/category.json";
-import posts from "../mockupData/service.json";
-import users from "../mockupData/user.json";
+
+import services from "../mockupData/service.json";
 import createdJobs from "../mockupData/created.json";
+
+import donations from "../mockupData/donation.json";
+
+import users from "../mockupData/user.json";
 import contacts from "../mockupData/contacts.json";
 
 function FakeBackend() {
 
     return(
-        <p>Everything is working fine</p>
+        <p>This is fake backend</p>
     )
 }
 
@@ -33,24 +37,43 @@ export function GetCategoryById(value) {
     return categories.find(category => category.category_id == value);
 }
 
+export function GetCategoryByName(value) {
+    return categories.filter(category => category.category_name.toLocaleLowerCase().includes(value.toLocaleLowerCase()));
+}
+
 // jobs
 
 export function GetServicesByCategory(value) {
     if(value == null) {
-        return posts;
+        return services;
     }
     else {
-        let services = posts.filter(post => post.category == value);
-        return services;
+        let posts = services.filter(post => post.category == value);
+        return posts;
     }
 }
 
 export function GetServicesById(value) {
-    return posts.find(post => post.id == value);
+    return services.find(post => post.id == value);
 }
 
 export function GetServicesByUser(value) {
-    return posts.filter(post => post.owner == value);
+    return services.filter(post => post.owner == value);
+}
+
+export function GetOwnerServiceList(value) {
+    return createdJobs.filter(job => job.user_id);
+}
+
+export function GetJobByValue(value){
+    let localValue = value.toLowerCase();
+    let filterService = services.filter(service => {
+        return (
+            service.title.toLocaleLowerCase().includes(localValue) ||
+            service.secondary.toLocaleLowerCase().includes(localValue)
+        )
+    })
+    return filterService;
 }
 
 // users 
@@ -62,4 +85,30 @@ export function GetUserById(value) {
 export function GetContactList(value) {
     let contactList = contacts.filter(contact => contact.user_id == value);
     return contactList;
+}
+
+export function GetUsersByValue(value) {
+    let localValue = value.toLowerCase();
+    let filterUsers = users.filter(user => {
+        return(
+            user.username.toLocaleLowerCase().includes(localValue) ||
+            user.name.toLocaleLowerCase().includes(localValue) ||
+            user.lastname.toLocaleLowerCase().includes(localValue) ||
+            user.location.toLocaleLowerCase().includes(localValue)
+        )
+    })
+    return filterUsers;
+}
+
+// donations
+
+export function GetDonationByValue(value) {
+    let localValue = value.toLowerCase();
+    let filterDonations = donations.filter(donation => {
+        return(
+            donation.title.toLocaleLowerCase().includes(localValue) ||
+            donation.title.toLocaleLowerCase().includes(localValue)
+        )
+    })
+    return filterDonations;
 }

@@ -1,13 +1,14 @@
 import React from "react";
-import { Button, makeStyles, Typography } from "@material-ui/core";
-import { Grid } from "@material-ui/core";
+import { Button, Typography } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
+import { Grid } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import UserInfo from "../components/UserInfo";
 import Carousel from "../components/Carousel";
 
 import {GetServicesById} from "../fakeAPI/FakeBackend";
 import {GetUserById} from "../fakeAPI/FakeBackend";
-import {GetServicesByUser} from "../fakeAPI/FakeBackend";
+import {GetOwnerServiceList} from "../fakeAPI/FakeBackend";
 import {GetCategoryById} from "../fakeAPI/FakeBackend";
 
 const useStyles = makeStyles((theme)=>({
@@ -102,7 +103,7 @@ function Service(props) {
 
     const service = GetServicesById(id);
     const user = GetUserById(service.owner);
-    const services = GetServicesByUser(user.id);
+    const serviceList = GetOwnerServiceList(service.owner);
     const category = GetCategoryById(service.category);
 
     return(
@@ -125,7 +126,7 @@ function Service(props) {
                     <Grid xs={12} container className={classes.row + " " + classes.buttonContainer}>
                         <Grid xs={4} container className={classes.column + " " + classes.btn} style={{borderRadius:"0 0 0 10px"}}>Apply</Grid>
                         <Grid xs={4} container className={classes.column + " " + classes.btn}>Contact</Grid>
-                        <Grid xs={4} container onClick={() => navigate(`../services/${category.category_id}`)}className={classes.column + " " + classes.btn} style={{borderRadius:"0 0 10px 0"}}>View Category</Grid>
+                        <Grid xs={4} container onClick={() => navigate(`../services/${category.category_id}`)} className={classes.column + " " + classes.btn} style={{borderRadius:"0 0 10px 0"}}>View Category</Grid>
                     </Grid>
                 </Grid>
                 <Grid xs={9} container className={classes.body}>
@@ -134,14 +135,11 @@ function Service(props) {
                     </Typography>
                 </Grid>
                 <Grid xs={9} container className={classes.content}>
-                    <Carousel services={services} username={user.username} service_id={service.id}/>
-                </Grid>
-                <Grid container className={classes.footer}>
-
+                    <Carousel services={serviceList} username={user.username} service_id={service.id}/>
                 </Grid>
             </Grid>
             <Grid xs={3} container className={classes.userInfoContainer}>
-                <UserInfo user={user} />
+                <UserInfo user={user} type='service'/>
             </Grid>
         </Grid>
     )

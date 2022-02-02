@@ -1,6 +1,7 @@
 import React from "react";
-import { makeStyles, Typography } from "@material-ui/core";
-import { Grid } from "@material-ui/core";
+import { Typography } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
+import { Grid } from "@mui/material";
 import JobContainer from "../components/JobContainer";
 import JobFilter from "../components/JobFilter";
 
@@ -14,7 +15,7 @@ const useStyles = makeStyles((theme)=>({
         display: "flex",
         flexDirection: "column",
         justifyContent: "flex-start",
-        alignItems: "flex-start"
+        alignItems: "center"
     },
 
     row: {
@@ -36,8 +37,14 @@ const useStyles = makeStyles((theme)=>({
     },
 
     filter: {
-        padding:"50px 20px",
+        position: "absolute",
+        right:"0px",
     },
+
+    root: {
+        borderLeft: '1px solid rgba(0, 0, 0, .25)',
+        borderRight: '1px solid rgba(0, 0, 0, .25)',
+    }
 }));
 
 function Services(props) {
@@ -57,10 +64,10 @@ function Services(props) {
     const category = GetCategoryById(id);
     const posts = GetServicesByCategory(id);
 
-    return(
+    return (
         <Grid container className={classes.topLeft}>
-            <Grid xs={9} container className={classes.column}>
-            <Grid container justify="space-between">
+            <Grid container className={classes.column + " " + classes.root}>
+            <Grid container justifyContent="space-between">
                 <Typography style={{padding:"20px 50px", fontSize:"20px", color: "gray"}}>{posts.length} jobs found {id ? `in "${category.category_name}"` : null}</Typography>
             </Grid>
                 <Grid container className={classes.column + " " + classes.jobsGrid}>
@@ -76,15 +83,14 @@ function Services(props) {
                                 <JobContainer key={post.post_id} post={post} user={user} profile={profile}/>
                             )
                         })
-                        // .sort((a, b) => b.title.toLocaleLowerCase() > a.title.toLocaleLowerCase() ? -1:1)
                     }
                 </Grid>
             </Grid>
-            <Grid xs={3} container className={classes.filter}>
+            <Grid xl={2.5} lg={2} container className={classes.column + " " + classes.filter}>
                 <JobFilter handleFilter={handleFilter} radioValue={radioValue} handleOrder={handleOrder} order={order}/>
             </Grid>
         </Grid>
-    )
+    );
 }
 
 export default Services;

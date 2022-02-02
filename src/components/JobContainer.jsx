@@ -1,7 +1,8 @@
 import React from "react";
-import { makeStyles, Typography } from "@material-ui/core";
-import { Grid } from "@material-ui/core";
-import { Button } from "@material-ui/core";
+import { Typography } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
+import { Grid } from "@mui/material";
+import { Button } from "@mui/material";
 import arrowRightIcon from "../pictures/arrowRight2.png";
 import { useNavigate } from "react-router-dom";
 
@@ -84,12 +85,9 @@ const useStyles = makeStyles((theme)=>({
             cursor: "pointer",
         }
     },
-    round: {
-        borderRadius:"100px",
-    },
     arrowContainer:{
-        alignItems:"center",
-        justifyContent:"center",
+        borderRadius:"100px",
+        justifyContent:"flex-end",
         height:"150px"
     },
 }));
@@ -110,8 +108,8 @@ function JobContainer(props){
                 <Typography className={classes.jobHeader}>{props.post.title}</Typography>
                 <Typography className={classes.jobBody}>{props.post.secondary}</Typography>
             </Grid>
-            <Grid xs={2}>
-                <Button container className={classes.round + " " + classes.arrowContainer}>
+            <Grid xs={2} container className={classes.row + " " + classes.arrowContainer}>
+                <Button>
                     <img src={arrowRightIcon} alt="view job" className={classes.arrowIcon} onClick={() => navigate(`../service/${props.post.id}`)}/>
                 </Button>
             </Grid>

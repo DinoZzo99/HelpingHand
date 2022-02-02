@@ -1,5 +1,6 @@
 import React from "react";
-import { makeStyles, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
 import { Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -20,15 +21,9 @@ const useStyles = makeStyles((theme)=>({
         alignItems:"center",
     },
 
-    topLeft:{
-        display: "flex",
-        flexDirection: "row",
-        justifyContent:"flex-start",
-        alignItems:"flex-start",
-    },
-
     root: {
-        color: "black",
+        borderLeft: '1px solid rgba(0, 0, 0, .25)',
+        borderRight: '1px solid rgba(0, 0, 0, .25)',
     },
 
     tabs: {
@@ -63,9 +58,7 @@ const useStyles = makeStyles((theme)=>({
     },
 
     rootCat: {
-        height:"500px",
         padding:"20px 50px",
-        justifyContent:"space-eve"
     },
 
     categoryContainer: {
@@ -108,41 +101,39 @@ function Category(props) {
     }
 
     return(
-        <Grid container className={classes.topLeft}>
-            <Grid xs={10} container className={classes.column}>
-                <Grid className={classes.row + " " + classes.tabs}>
-                    <Grid
-                        container
-                        className={classes.column + " " + classes.tab + " " + classes.tabLeft + " " + `${expanded ? null : classes.tabSelected}`}
-                        onClick={()=>handleChange(0)}
-                    >
-                        Service
-                    </Grid>
-                    <Grid
-                        container
-                        className={classes.column + " " + classes.tab + " " + classes.tabRight + " " + `${expanded ? classes.tabSelected : null}`}
-                        onClick={()=>handleChange(1)}
-                    >
-                        Donation
-                    </Grid>
+        <Grid xs={12} container className={classes.column + " " + classes.root}>
+            <Grid className={classes.row + " " + classes.tabs}>
+                <Grid
+                    container
+                    className={classes.column + " " + classes.tab + " " + classes.tabLeft + " " + `${expanded ? null : classes.tabSelected}`}
+                    onClick={()=>handleChange(0)}
+                >
+                    Service
                 </Grid>
-                <Grid xs={12} spacing={1} container className={classes.row + " " + classes.rootCat}>
-                    {
-                        categories.map((category, index)=>{
-                            return (
-                                <Grid xs={3} container className={classes.column + " " + classes.categoryContainer}>
-                                    <Grid container className={classes.column + " " + classes.category} onClick={() => navigate(`../services/${category.category_id}`)}>
-                                        <Grid container className={classes.iconContainer}>
-                                        </Grid>
-                                        <Typography className={classes.categoryTypo}>
-                                            {category.category_name}
-                                        </Typography>
+                <Grid
+                    container
+                    className={classes.column + " " + classes.tab + " " + classes.tabRight + " " + `${expanded ? classes.tabSelected : null}`}
+                    onClick={()=>handleChange(1)}
+                >
+                    Donation
+                </Grid>
+            </Grid>
+            <Grid container className={classes.row + " " + classes.rootCat}>
+                {
+                    categories.map((category, index)=>{
+                        return (
+                            <Grid xs={4} container className={classes.column + " " + classes.categoryContainer}>
+                                <Grid container className={classes.column + " " + classes.category} onClick={() => navigate(`../services/${category.category_id}`)}>
+                                    <Grid container className={classes.iconContainer}>
                                     </Grid>
+                                    <Typography className={classes.categoryTypo}>
+                                        {category.category_name}
+                                    </Typography>
                                 </Grid>
-                            )
-                        })
-                    }
-                </Grid>
+                            </Grid>
+                        )
+                    })
+                }
             </Grid>
         </Grid>
     )

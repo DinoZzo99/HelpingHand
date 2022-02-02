@@ -1,6 +1,7 @@
 import React from "react";
-import { makeStyles, Typography } from "@material-ui/core";
-import { Grid } from "@material-ui/core";
+import { Typography } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
+import { Grid } from "@mui/material";
 import JobContainer from "../components/JobContainer";
 import JobFilter from "../components/JobFilter";
 
@@ -57,10 +58,10 @@ function Jobs(props) {
     const category = GetCategoryById(id);
     const posts = GetServicesByCategory(id);
 
-    return(
+    return (
         <Grid container className={classes.topLeft}>
             <Grid xs={9} container className={classes.column}>
-            <Grid container justify="space-between">
+            <Grid container justifyContent="space-between">
                 <Typography style={{padding:"20px 50px", fontSize:"20px", color: "gray"}}>{posts.length} jobs found {id ? `in "${category.category_name}"` : null}</Typography>
             </Grid>
                 <Grid container className={classes.column + " " + classes.jobsGrid}>
@@ -84,7 +85,7 @@ function Jobs(props) {
                 <JobFilter handleFilter={handleFilter} radioValue={radioValue} handleOrder={handleOrder} order={order}/>
             </Grid>
         </Grid>
-    )
+    );
 }
 
 export default Jobs;

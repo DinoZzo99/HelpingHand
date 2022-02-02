@@ -1,27 +1,39 @@
 import React from "react";
-import { Button, makeStyles } from "@material-ui/core";
-import { Grid, Typography } from "@material-ui/core";
-import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from "@material-ui/core";
-import CategoryIcon from '@material-ui/icons/Category';
+import { Button } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
+import { Grid, Typography } from "@mui/material";
+import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from "@mui/material";
+import CategoryIcon from '@mui/icons-material/Category';
 import { useNavigate } from "react-router-dom";
 
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 
 const useStyle = makeStyles((theme)=>({
     column: {
         display: "flex",
         flexDirection: "column",
         justifyContent: "flex-start",
-        alignItems: "flex-start"
+        alignItems: "center"
+    },
+
+    row: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center",
     },
     
     root: {
-        margin:"0px 30px",
+        width: "220px",
+        margin:"30px 0",
+        alignItems:"center",
+        padding:"20px 40px",
         borderRadius:"20px",
         boxShadow: "0px 1px 5px #000000",
-        padding: "30px 50px",
-        alignItems:"center"
+        [theme.breakpoints.down('xl')]:{
+            boxShadow: "0 0 0 #ffffff",
+        }
     },
 
     sortBy: {
@@ -32,8 +44,7 @@ const useStyle = makeStyles((theme)=>({
         display: "flex",
         flexDirection: "row",
         justifyContent:"space-between",
-        width:"150px",
-        marginTop:"20px",
+        marginTop:"15px",
         backgroundColor: "#007ea7",
         color: "white",
         "&:hover": {
@@ -57,10 +68,10 @@ function JobFilter(props){
     };
 
     return(
-        <Grid xs={12} container className={classes.column + " " + classes.root}>
+        <Grid xcontainer className={classes.column + " " + classes.root}>
             <Grid container className={classes.column}>
                 <Grid container className={classes.row}>
-                    <Typography c>Sort By</Typography>
+                    <Typography>Sort By</Typography>
                     <Grid onClick={() => handleArrow()}>
                     {
                         props.order === 'asc' ? <ArrowDropDownIcon /> : <ArrowDropUpIcon/>

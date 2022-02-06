@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme)=>({
     },
 
     header: {
-        borderRadius:"10px",
+        borderRadius:"4px",
         boxShadow: "0px 1px 5px #000000",
         marginTop:"40px",
         justifyContent:"space-between",
@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme)=>({
     },
 
     buttonContainer: {
-        borderRadius:"0 0 10px 10px",
+        borderRadius:"0 0 4px 4px",
         borderTop: '1px solid rgba(0, 0, 0, .125)',
     },
 
@@ -124,9 +124,9 @@ function Service(props) {
                         </Grid>
                     </Grid>
                     <Grid xs={12} container className={classes.row + " " + classes.buttonContainer}>
-                        <Grid xs={4} container className={classes.column + " " + classes.btn} style={{borderRadius:"0 0 0 10px"}}>Apply</Grid>
+                        <Grid xs={4} container className={classes.column + " " + classes.btn} style={{borderRadius:"0 0 0 4px"}}>Apply</Grid>
                         <Grid xs={4} container className={classes.column + " " + classes.btn}>Contact</Grid>
-                        <Grid xs={4} container onClick={() => navigate(`../services/${category.category_id}`)} className={classes.column + " " + classes.btn} style={{borderRadius:"0 0 10px 0"}}>View Category</Grid>
+                        <Grid xs={4} container onClick={() => navigate(`../services/${category.category_id}`)} className={classes.column + " " + classes.btn} style={{borderRadius:"0 0 4px 0"}}>View Category</Grid>
                     </Grid>
                 </Grid>
                 <Grid xs={9} container className={classes.body}>

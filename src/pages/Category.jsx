@@ -58,11 +58,11 @@ const useStyles = makeStyles((theme)=>({
     },
 
     rootCat: {
-        padding:"20px 50px",
+        padding:"20px",
     },
 
     categoryContainer: {
-        padding:"40px",
+        padding:"50px",
     },
 
     category: {
@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme)=>({
 
     categoryTypo: {
         fontFamily:"'Raleway','sans-serif'",
-        fontSize:"18px",
+        fontSize:"16px",
         padding:"8px",
     },
 }));

@@ -1,13 +1,10 @@
 import React from "react";
-import { Button, Typography } from "@mui/material";
 import makeStyles from '@mui/styles/makeStyles';
 import { Grid } from "@mui/material";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-import {GetOwnerServiceList, GetServicesById} from "../fakeAPI/FakeBackend";
+import {GetOwnerServiceList} from "../fakeAPI/FakeBackend";
 import {GetUserById} from "../fakeAPI/FakeBackend";
-import {GetServicesByUser} from "../fakeAPI/FakeBackend";
-import {GetCategoryById} from "../fakeAPI/FakeBackend";
 import UserInfo from "../components/UserInfo";
 import Carousel from "../components/Carousel";
 
@@ -17,13 +14,6 @@ const useStyles = makeStyles((theme)=>({
         flexDirection: "column",
         justifyContent: "flex-start",
         alignItems: "center"
-    },
-
-    row: {
-        display: "flex",
-        flexDirection: "row",
-        justifyContent:"flex-start",
-        alignItems:"center",
     },
 
     topLeft: {
@@ -47,39 +37,40 @@ const useStyles = makeStyles((theme)=>({
     },
 
     userInfoContainer: {
+        position:"absolute",
+        right:0,
         padding:"50px 20px",
     },
 
     content: {
-        padding:"10px",
+        padding:"50px",
+        borderLeft: '1px solid rgba(0, 0, 0, .25)',
+        borderRight: '1px solid rgba(0, 0, 0, .25)',
     },
 }));
 
 function User(props) {
     const classes = useStyles();
     const {id} = useParams();
-    const [ID, setID] = React.useState(id);
-    const location = useLocation();
 
-    const user = GetUserById(ID);
-    const serviceList = GetOwnerServiceList(ID);
+    const user = GetUserById(id);
+    const serviceList = GetOwnerServiceList(id);
 
-    React.useEffect(() => {
-        if(`/users/${ID}` !== location.pathname){
-            setID(location.pathname.slice(-1));
-            console.log('id has changed');
-        }
-    },[ID]);
+    const [index, setIndex] = React.useState(true);
+
+    React.useEffect(() => (
+        index ? (
+            console.log(serviceList),
+            setIndex(false)
+        ) : null
+    ))
 
     return(
         <Grid container className={classes.topLeft}>
-            <Grid xs={9} container className={classes.column}>
-                {ID}
-                <Grid xs={9} container className={classes.content}>
-                    <Carousel services={serviceList} username={null} service_id={null}/>
-                </Grid>
+            <Grid xs={12} container className={classes.column + " " + classes.content}>
+                {serviceList.length > 1 ? <Carousel services={serviceList} username={null} service_id={null}/> : null}
             </Grid>
-            <Grid xs={3} container className={classes.userInfoContainer}>
+            <Grid xs={2.5} container className={classes.userInfoContainer}>
                 <UserInfo user={user}/>
             </Grid>
         </Grid>

@@ -3,11 +3,14 @@ import makeStyles from '@mui/styles/makeStyles';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-import { Toolbar, Grid, AppBar, Button, MenuList, MenuItem, ListItemText, Divider, Typography } from "@mui/material";
+import { Toolbar, Grid, AppBar, Button, MenuList, MenuItem, Divider, Typography } from "@mui/material";
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
+import { styled } from "@mui/material/styles";
 
 import { useNavigate } from "react-router-dom";
-import { styled, alpha } from "@mui/material/styles";
+import { useDispatch, useSelector } from "react-redux";
+import { logOut } from "../redux/actions/loginStatus";
+import { userLoggedIn } from "../redux/actions/user";
 
 const useStyles = makeStyles((theme)=>({
     navbar: {
@@ -70,6 +73,14 @@ function Navbar(props) {
     const classes = useStyles();
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const userId = useSelector(state => state.userId);
+
+    const handleLogOut = () => {
+        dispatch(logOut());
+        dispatch(userLoggedIn(null));
+        navigate("/");
+    }
 
     return(
         <AppBar position="sticky">
@@ -81,16 +92,16 @@ function Navbar(props) {
                     <LightTooltip
                         placement="bottom-start"
                         title={
-                            <MenuList dense>
-                                <MenuItem>
-                                    <Typography className={classes.menuItem} onClick={() => navigate(`/services`)}>Services</Typography>
+                            <MenuList>
+                                <MenuItem onClick={() => navigate(`/services`)}>
+                                    <Typography className={classes.menuItem}>Services</Typography>
                                 </MenuItem>
-                                <MenuItem>
-                                    <Typography className={classes.menuItem} onClick={() => navigate(`/services`)}>Donations</Typography>
+                                <MenuItem onClick={() => navigate(`/donations`)}>
+                                    <Typography className={classes.menuItem}>Donations</Typography>
                                 </MenuItem>
                                 <Divider />
-                                <MenuItem>
-                                    <Typography className={classes.menuItem} onClick={() => navigate(`/categories`)}>Categories</Typography>
+                                <MenuItem onClick={() => navigate(`/categories`)}>
+                                    <Typography className={classes.menuItem}>Categories</Typography>
                                 </MenuItem>
                             </MenuList>
                         }
@@ -100,9 +111,9 @@ function Navbar(props) {
                     <LightTooltip
                         placement="bottom-start"
                         title={
-                            <MenuList dense>
-                                <MenuItem>
-                                    <Typography className={classes.menuItem} onClick={() => navigate(`/search`)}>Search</Typography>
+                            <MenuList>
+                                <MenuItem onClick={() => navigate(`/search`)}>
+                                    <Typography className={classes.menuItem}>Search</Typography>
                                 </MenuItem>
                                 <Divider />
                                 <MenuItem>
@@ -121,11 +132,32 @@ function Navbar(props) {
                     </LightTooltip>
                 </Grid>
                 <Grid xs={2} container className={classes.rowEnd}>
-                    <Button className={classes.profileButton} onClick={() => navigate("/users/1")}>
-                        <AccountCircleIcon className={classes.profile_icon}/>
-                        Profile
-                        <ArrowDropDownIcon/>
-                    </Button>
+                    <LightTooltip
+                        placement="bottom-end"
+                        title={
+                            <MenuList dense>
+                                <MenuItem>
+                                    <Typography className={classes.menuItem}>View profile</Typography>
+                                </MenuItem>
+                                <Divider />
+                                <MenuItem>
+                                    <Typography className={classes.menuItem}>Active Jobs</Typography>
+                                </MenuItem>
+                                <MenuItem>
+                                    <Typography className={classes.menuItem}>My Jobs</Typography>
+                                </MenuItem>
+                                <Divider />
+                                <MenuItem onClick={() => handleLogOut()}>
+                                    <Typography className={classes.menuItem}>Log out</Typography>
+                                </MenuItem>
+                            </MenuList>
+                        }
+                    >
+                        <Button className={classes.profileButton}>
+                            <AccountCircleIcon className={classes.profile_icon}/>{userId} Profile
+                            <ArrowDropDownIcon/>
+                        </Button>
+                    </LightTooltip>
                 </Grid>
             </Toolbar>
         </AppBar>

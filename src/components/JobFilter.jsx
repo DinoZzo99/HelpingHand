@@ -29,7 +29,7 @@ const useStyle = makeStyles((theme)=>({
         margin:"30px 0",
         alignItems:"center",
         padding:"20px 40px",
-        borderRadius:"20px",
+        borderRadius:"4px",
         boxShadow: "0px 1px 5px #000000",
         [theme.breakpoints.down('xl')]:{
             boxShadow: "0 0 0 #ffffff",

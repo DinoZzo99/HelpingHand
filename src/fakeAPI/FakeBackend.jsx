@@ -62,7 +62,7 @@ export function GetServicesByUser(value) {
 }
 
 export function GetOwnerServiceList(value) {
-    return createdJobs.filter(job => job.user_id);
+    return createdJobs.filter(job => job.user_id == value);
 }
 
 export function GetJobByValue(value){
@@ -77,6 +77,11 @@ export function GetJobByValue(value){
 }
 
 // users 
+
+export function GetUserByLogin(email) {
+    let user = users.find(user => user.email === email);
+    return user;
+}
 
 export function GetUserById(value) {
     return users.find(user => user.id == value);
@@ -97,6 +102,7 @@ export function GetUsersByValue(value) {
             user.location.toLocaleLowerCase().includes(localValue)
         )
     })
+    console.log(filterUsers);
     return filterUsers;
 }
 
@@ -111,4 +117,9 @@ export function GetDonationByValue(value) {
         )
     })
     return filterDonations;
+}
+
+export function GetDonationsByCategory(value) {
+    if(value == null) return donations;
+    else return donations.filter(donation => donation.category == value);
 }

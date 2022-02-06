@@ -4,6 +4,7 @@ import AppBar from '@mui/material/AppBar';
 import { Grid } from "@mui/material";
 import { Typography } from "@mui/material";
 import logo from "../pictures/logo.png";
+import { useSelector } from "react-redux";
 
 
 const useStyles = makeStyles((theme)=>({

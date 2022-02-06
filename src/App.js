@@ -2,8 +2,7 @@
 import './App.css';
 import { ThemeProvider, StyledEngineProvider, createTheme } from '@mui/material/styles';
 import { Grid } from '@mui/material';
-import SideGrid from './main/SideGrid';
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import Home from './pages/Home';
 import About from './pages/About';
 import MainHeader from './main/MainHeader';
@@ -15,6 +14,11 @@ import Services from './pages/Services';
 import User from './pages/User';
 import Search from './pages/Search';
 import SearchResults from './pages/SearchResults';
+import Register from './pages/Register';
+import Welcome from './pages/Welcome';
+
+import { useSelector } from 'react-redux';
+import React from 'react';
 
 
 const theme = createTheme({
@@ -25,22 +29,40 @@ const theme = createTheme({
 });
 
 function App() {
+  const ifLoggedIn = useSelector(state => state.login);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if(ifLoggedIn === 'guest' && !location.pathname.includes("welcome") && !location.pathname.includes("register")) navigate("welcome");
+    if(ifLoggedIn !== 'guest' && (location.pathname.includes("welcome") || location.pathname.includes("register"))) navigate("home");
+    if(location.pathname === "/"){
+      ifLoggedIn === 'guest' ? navigate("welcome") : navigate("home")
+    }
+  })
+
   return (
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={theme}>
+          <Grid style={{overflowY:"scroll", height:"100vh"}}>
           <MainHeader/>
           <Navbar/>
-          <Contacts/>
+          {
+            ifLoggedIn === 'guest' ? null : <Contacts/>
+          }
           <Grid xs={12}container>
             <Grid xl={2.5} lg={2}/>
             <Grid xl={7} lg={8} container>
                 <Routes>
+                  <Route path="welcome" element={<Welcome/>}/>
+                  <Route path="register" element={<Register/>}/>
                   <Route path="home" element={<Home/>}/>
                   <Route path="about" element={<About/>}/>
                   <Route path="service/:id" element={<Service/>}/>
                   <Route path="categories" element={<Category/>}/>
                   <Route path="services" element={<Services/>}/>
                   <Route path="services/:id" element={<Services/>}/>
+                  <Route path="donations" element={<Services/>}/>
                   <Route path="my-profile" element={<User/>}/>
                   <Route path="users/:id" element={<User/>}/>
                   <Route path="search" element={<Search/>}/>
@@ -48,6 +70,9 @@ function App() {
                 </Routes>
             </Grid>
           </Grid>
+
+          </Grid>
+          
         </ThemeProvider>
       </StyledEngineProvider>
   );

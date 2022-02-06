@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme)=>({
     jobContainer:{
         alignItems:"flex-start",
         height:"150px",
-        borderRadius: "20px",
+        borderRadius: "4px",
         marginBottom:"40px",
         boxShadow: "0px 1px 5px #000000",
         fontFamily: ['"Raleway"','sans-serif'].join(','),
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme)=>({
 
     jobUserInfo:{
         height:"150px",
-        borderRadius:"20px 0 0 20px",
+        borderRadius:"4px 0 0 4px",
         padding:"10px",
         backgroundColor:"#007ea7",
         justifyContent:"space-between",
@@ -64,8 +64,8 @@ const useStyles = makeStyles((theme)=>({
     },
 
     jobInfo: {
-        height: "200px",
         padding: "10px",
+        justifyContent:"space-between",
     },
 
     typographyUser:{
@@ -105,8 +105,11 @@ function JobContainer(props){
                 <Typography className={classes.typographyUser2}>{props.post.date_from}</Typography>
             </Grid>
             <Grid xs={8} container className={classes.column + " " + classes.jobInfo}>
-                <Typography className={classes.jobHeader}>{props.post.title}</Typography>
-                <Typography className={classes.jobBody}>{props.post.secondary}</Typography>
+                <Grid container>
+                    <Typography className={classes.jobHeader}>{props.post.title}</Typography>
+                    <Typography className={classes.jobBody}>{props.post.secondary}</Typography>
+                </Grid>
+                {props.isService ? null : <Typography className={classes.jobBody}>{props.post.payment}</Typography>}
             </Grid>
             <Grid xs={2} container className={classes.row + " " + classes.arrowContainer}>
                 <Button>

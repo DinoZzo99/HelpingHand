@@ -5,6 +5,9 @@ import SearchResultTabs from "../components/SearchResultTabs";
 
 import { GetUsersByValue , GetCategoryByName , GetJobByValue, GetDonationByValue} from "../fakeAPI/FakeBackend";
 import { useParams } from "react-router-dom";
+import SearchTabsUser from "../components/SearchTabsUser";
+import SearchTabsServDona from "../components/SearchTabsServDona";
+import SearchTabsCategory from "../components/SearchTabsCategory";
 
 const useStyles = makeStyles((theme)=>({
     column: {
@@ -22,7 +25,10 @@ const useStyles = makeStyles((theme)=>({
     },
 
     root: {
-        margin: "30px",
+        padding:"30px 10px",
+    },
+
+    container: {
         boxShadow: "0px 1px 4px #000000",
         borderRadius:"5px",
     },
@@ -46,15 +52,6 @@ function SearchResults(props) {
     const classes = useStyles();
     const {keywords} = useParams();
     const [index, setIndex] = React.useState(0);
-    const [data, setData] = React.useState([]);
-    const [isLoaded, setIsLoaded] = React.useState(0);
-
-    React.useEffect(() => {
-        if(isLoaded == 0) {
-            setIsLoaded(1);
-            handleData(0);
-        }
-    })
     
     const users = GetUsersByValue(keywords);
     const services = GetJobByValue(keywords);
@@ -62,48 +59,14 @@ function SearchResults(props) {
     const categories = GetCategoryByName(keywords);
   
     const handleIndex = (value) => {
-        setData([]);
         setIndex(value);
-        handleData(value);
     };
-    
-    const handleData = (value) => {
-        let newItem = {profile_picture: false, text1: "", text2: ""};
-        if(value == 0) {
-            users.forEach((item)=>{
-                newItem.profile_picture = item.profile_picture;
-                newItem.text1 = item.name;
-                newItem.text2 = item.lastname;
-                setData(prevState => [...prevState, newItem]);
-            })
-        }
-        if(value == 1) {
-            services.forEach((item)=>{
-                newItem.text1 = item.title;
-                newItem.text2 = item.secondary;
-                setData(prevState => [...prevState, newItem]);
-            })
-        }
-        if(value == 2) {
-            donations.forEach((item)=>{
-                newItem.text1 = item.title;
-                newItem.text2 = item.secondary;
-                setData(prevState => [...prevState, newItem]);
-            })
-        }
-        if(value == 3) {
-            categories.forEach((item)=>{
-                newItem.text1 = item.category_name;
-                setData(prevState => [...prevState, newItem]);
-            })
-        }
-    }
 
     return(
         <Grid container className={classes.topLeft}>
-            <Grid xs={9} container className={classes.column}>
-                <Grid xs={9} container className={classes.root}>
-                    <Grid xs={12} container>
+            <Grid xs={7} container className={classes.root}>
+                <Grid container className={classes.container}>
+                    <Grid container>
                         <Grid xs={3} container
                             className={classes.column + " " + classes.tab + " " + `${index == 0 ? classes.active_tab : null}`}
                             onClick={() => handleIndex(0)}
@@ -131,10 +94,25 @@ function SearchResults(props) {
                             Categories
                         </Grid>
                     </Grid>
-                    <SearchResultTabs index={index} data={data}/>
+                    <Grid container className={classes.column}>
+                        {
+                            index == 0 ? <SearchTabsUser users={users}/> : (
+                                index == 1 ? <SearchTabsServDona jobs={services} index={index}/> :
+                                    index == 2 ? <SearchTabsServDona jobs={donations} index={index}/> :
+                                        <SearchTabsCategory categories={categories}/>
+
+                            )
+                                //     index == 2 ? <SearchResultTabs services={services}/> :
+                                //     <SearchResultTabs/>
+                        }
+                    </Grid>
                 </Grid>
             </Grid>
-            
+            <Grid xs={5} container className={classes.root}>
+                <Grid container style={{height:"400px", backgroundColor:"lightblue"}}>
+
+                </Grid>
+            </Grid>
         </Grid>
     )
 }

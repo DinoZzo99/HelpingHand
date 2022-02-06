@@ -28,10 +28,11 @@ const useStyles = makeStyles((theme)=>({
     },
 
     container: {
-        padding:"30px",
+        padding:"20px",
     },
 
     content: {
+        padding:"10px",
         borderRadius:"5px",
         boxShadow: "0px 1px 5px #000000",
         backgroundColor:"rgb(240,240,255)",
@@ -51,7 +52,8 @@ const useStyles = makeStyles((theme)=>({
 
     containerText: {
         fontFamily:"'Raleway','sans-serif'",
-        fontSize:"24px",
+        fontSize:"20px",
+        fontWeight: 600,
         textAlign:"center"
     },
     
@@ -61,6 +63,14 @@ const useStyles = makeStyles((theme)=>({
         borderRadius: "10px 10px 0 0",
         backgroundColor: "#005c7a",
     },
+
+    viewMore: {
+        backgroundColor: "#005c7a",
+    },
+
+    containerBottomText: {
+
+    }
 }));
 
 function Carousel(props) {
@@ -86,15 +96,26 @@ function Carousel(props) {
                     let category = GetCategoryById(service.category);
 
                     return (
-                        <Grid xs={4} container className={classes.column + " " + classes.container}>
+                        <Grid xs={3} container className={classes.column + " " + classes.container}>
                             <Grid container className={classes.column + " " + classes.content} onClick={()=>navigate(`../service/${service.id}`)}>
                                 <Typography className={classes.containerText}>{service.title}</Typography>
                                 <Typography>{category.category_name}</Typography>
+                                <Typography className={classes.containerBottomText}>{service.date_from}</Typography>
                             </Grid>
                         </Grid>
                     )
                 })
             }
+            {
+                props.services.filter(service => service.job_id !== props.service_id).length > 3 ? 
+                    <Grid xs={3} container className={classes.column + " " + classes.container}>
+                        <Grid container className={classes.column + " " + classes.content+ " " + classes.viewMore}>
+                            <Typography className={classes.containerText}>View More</Typography>
+                        </Grid>
+                    </Grid>
+                    : null
+            }
+                
             </Grid>
         </Grid>
     )

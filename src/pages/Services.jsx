@@ -5,9 +5,9 @@ import { Grid } from "@mui/material";
 import JobContainer from "../components/JobContainer";
 import JobFilter from "../components/JobFilter";
 
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 
-import {GetServicesByCategory, GetUserById} from "../fakeAPI/FakeBackend";
+import {GetServicesByCategory, GetUserById, GetDonationsByCategory} from "../fakeAPI/FakeBackend";
 import {GetCategoryById} from "../fakeAPI/FakeBackend";
 
 const useStyles = makeStyles((theme)=>({
@@ -50,8 +50,25 @@ const useStyles = makeStyles((theme)=>({
 function Services(props) {
     const classes = useStyles();
     const {id} = useParams();
+    const location = useLocation();
     const [radioValue, setRadioValue] = React.useState('date');
     const [order, setOrder] = React.useState('asc');
+    const [isService, setIsService] = React.useState(true);
+    const [data, setData] = React.useState([]);
+
+    React.useEffect(() => (
+        location.pathname.includes("services") ? (
+            setIsService(true),
+            setData(GetServicesByCategory(id))
+        ) : (
+            setIsService(false),
+            setData(GetDonationsByCategory(id))
+        )
+    ));
+    
+    const handleUseEffect = () => {
+        
+    }
 
     const handleFilter = (value) => {
         setRadioValue(value);
@@ -62,17 +79,16 @@ function Services(props) {
     }
 
     const category = GetCategoryById(id);
-    const posts = GetServicesByCategory(id);
 
     return (
         <Grid container className={classes.topLeft}>
             <Grid container className={classes.column + " " + classes.root}>
             <Grid container justifyContent="space-between">
-                <Typography style={{padding:"20px 50px", fontSize:"20px", color: "gray"}}>{posts.length} jobs found {id ? `in "${category.category_name}"` : null}</Typography>
+                <Typography style={{padding:"20px 50px", fontSize:"20px", color: "gray"}}>{data.length} {isService ? 'services' : 'donations'} found {id ? `in "${category.category_name}"` : null}</Typography>
             </Grid>
                 <Grid container className={classes.column + " " + classes.jobsGrid}>
                     {
-                        posts.sort((a,b) =>{
+                        data.sort((a,b) =>{
                             if(radioValue === 'date') return order === 'asc' ? (a.date_from > b.date_from ? 1 : -1) : (a.date_from > b.date_from ? -1 : 1);
                             if(radioValue === 'name') return order === 'asc' ? (a.title.toLocaleLowerCase() > b.title.toLocaleLowerCase() ? 1 : -1) : (a.title.toLocaleLowerCase() > b.title.toLocaleLowerCase() ? -1 : 1);
                             if(radioValue === 'popularity') return order === 'asc' ? (a.id > b.id ? 1 : -1) : (a.id > b.id ? 1 : -1);
@@ -80,7 +96,7 @@ function Services(props) {
                             let user = GetUserById(post.owner);
                             let profile = user.profile_picture;
                             return(
-                                <JobContainer key={post.post_id} post={post} user={user} profile={profile}/>
+                                <JobContainer key={post.id} post={post} user={user} profile={profile} isService={isService}/>
                             )
                         })
                     }

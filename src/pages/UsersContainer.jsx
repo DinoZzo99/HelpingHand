@@ -1,12 +1,12 @@
 import React from "react";
 import makeStyles from '@mui/styles/makeStyles';
 import { Grid } from "@mui/material";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 import {GetOwnerServiceList} from "../fakeAPI/FakeBackend";
 import {GetUserById} from "../fakeAPI/FakeBackend";
-import UserInfo from "../components/UserInfo";
-import Carousel from "../components/Carousel";
+import User from "../components/User";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme)=>({
     column: {
@@ -49,32 +49,34 @@ const useStyles = makeStyles((theme)=>({
     },
 }));
 
-function User(props) {
+function UsersContainer(props) {
     const classes = useStyles();
     const {id} = useParams();
+    const userId = useSelector(state => state.userId);
+    const [Id, setId] = React.useState(id == null  ? userId : id);
+    const [user, setUser] = React.useState(GetUserById(Id));
+    const [serviceList, setServiceList] = React.useState(GetOwnerServiceList(Id));
 
-    const user = GetUserById(id);
-    const serviceList = GetOwnerServiceList(id);
-
-    const [index, setIndex] = React.useState(true);
+    const location = useLocation();
 
     React.useEffect(() => (
-        index ? (
-            console.log(serviceList),
-            setIndex(false)
+        id ? (
+            id != Id ? (
+                setId(id),
+                setUser(GetUserById(id)),
+                setServiceList(GetOwnerServiceList(id)),
+                console.log("reset everything"),
+                console.log(user),
+                console.log(serviceList)
+            ) : null
         ) : null
     ))
 
     return(
         <Grid container className={classes.topLeft}>
-            <Grid xs={12} container className={classes.column + " " + classes.content}>
-                {serviceList.length > 1 ? <Carousel services={serviceList} username={null} service_id={null}/> : null}
-            </Grid>
-            <Grid xs={2.5} container className={classes.userInfoContainer}>
-                <UserInfo user={user}/>
-            </Grid>
+            <User user={user} serviceList={serviceList}/>
         </Grid>
     )
 }
 
-export default User;
+export default UsersContainer;

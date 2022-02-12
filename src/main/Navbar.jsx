@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../redux/actions/loginStatus";
 import { userLoggedIn } from "../redux/actions/user";
+import { GetUserById } from "../fakeAPI/FakeBackend";
 
 const useStyles = makeStyles((theme)=>({
     navbar: {
@@ -52,6 +53,10 @@ const useStyles = makeStyles((theme)=>({
         fontFamily:"'Raleway','sans-serif'",
         fontSize:"16px",
     },
+    menuTypo: {
+        marginLeft:"20px",
+        color: "gray"
+    }
 }));
 
 const LightTooltip = styled(({ className, ...props }) => (
@@ -75,6 +80,7 @@ function Navbar(props) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const userId = useSelector(state => state.userId);
+    const user = GetUserById(userId);
 
     const handleLogOut = () => {
         dispatch(logOut());
@@ -116,14 +122,12 @@ function Navbar(props) {
                                     <Typography className={classes.menuItem}>Search</Typography>
                                 </MenuItem>
                                 <Divider />
-                                <MenuItem>
-                                    <Typography className={classes.menuItem}>Create Job</Typography>
+                                    <Typography className={classes.menuItem + " " + classes.menuTypo}>Services/Donations</Typography>
+                                <MenuItem onClick={() => navigate(`/create-post`)}>
+                                    <Typography className={classes.menuItem}>Create</Typography>
                                 </MenuItem>
-                                <MenuItem>
-                                    <Typography className={classes.menuItem}>Edit Job</Typography>
-                                </MenuItem>
-                                <MenuItem>
-                                    <Typography className={classes.menuItem}>Delete Job</Typography>
+                                <MenuItem onClick={() => navigate(`/edit-post`)}>
+                                    <Typography className={classes.menuItem}>Edit</Typography>
                                 </MenuItem>
                             </MenuList>
                         }
@@ -136,7 +140,7 @@ function Navbar(props) {
                         placement="bottom-end"
                         title={
                             <MenuList dense>
-                                <MenuItem>
+                                <MenuItem onClick={() => navigate("/my-profile")}>
                                     <Typography className={classes.menuItem}>View profile</Typography>
                                 </MenuItem>
                                 <Divider />
@@ -154,7 +158,8 @@ function Navbar(props) {
                         }
                     >
                         <Button className={classes.profileButton}>
-                            <AccountCircleIcon className={classes.profile_icon}/>{userId} Profile
+                            <AccountCircleIcon className={classes.profile_icon}/>
+                            {user.name}
                             <ArrowDropDownIcon/>
                         </Button>
                     </LightTooltip>

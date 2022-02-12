@@ -5,6 +5,7 @@ import { Grid } from "@mui/material";
 import { Button } from "@mui/material";
 import arrowRightIcon from "../pictures/arrowRight2.png";
 import { useNavigate } from "react-router-dom";
+import { ModeCommentTwoTone } from "@material-ui/icons";
 
 
 const useStyles = makeStyles((theme)=>({
@@ -29,6 +30,9 @@ const useStyles = makeStyles((theme)=>({
         marginBottom:"40px",
         boxShadow: "0px 1px 5px #000000",
         fontFamily: ['"Raleway"','sans-serif'].join(','),
+        "&:hover":{
+            cursor:"pointer"
+        }
     },
 
     jobHeader:{
@@ -66,6 +70,7 @@ const useStyles = makeStyles((theme)=>({
     jobInfo: {
         padding: "10px",
         justifyContent:"space-between",
+        height:"100%"
     },
 
     typographyUser:{
@@ -96,25 +101,21 @@ function JobContainer(props){
     const classes = useStyles();
 
     let navigate = useNavigate();
+    const date = new Date(props.isService ? props.post.date_from : props.post.date_due);
 
     return(
         <Grid container className={classes.row + " " + classes.jobContainer}>
-            <Grid xs={2} container className={classes.column + " " + classes.jobUserInfo}>
+            <Grid xs={2.5} container className={classes.column + " " + classes.jobUserInfo} onClick={() => navigate(`/users/${props.post.owner}`)}>
                 <img src={`../material/${props.profile}`} className={classes.profilePicture}/>
                 <Typography className={classes.typographyUser}>{props.user.username}</Typography>
-                <Typography className={classes.typographyUser2}>{props.post.date_from}</Typography>
+                <Typography className={classes.typographyUser2}>{date.getDate()}/{(date.getMonth() + 1).toString()}/{date.getFullYear()}</Typography>
             </Grid>
-            <Grid xs={8} container className={classes.column + " " + classes.jobInfo}>
+            <Grid xs={8} container className={classes.column + " " + classes.jobInfo} onClick={() => navigate(`/service/${props.post.id}`)}>
                 <Grid container>
                     <Typography className={classes.jobHeader}>{props.post.title}</Typography>
                     <Typography className={classes.jobBody}>{props.post.secondary}</Typography>
                 </Grid>
                 {props.isService ? null : <Typography className={classes.jobBody}>{props.post.payment}</Typography>}
-            </Grid>
-            <Grid xs={2} container className={classes.row + " " + classes.arrowContainer}>
-                <Button>
-                    <img src={arrowRightIcon} alt="view job" className={classes.arrowIcon} onClick={() => navigate(`../service/${props.post.id}`)}/>
-                </Button>
             </Grid>
         </Grid>
     )

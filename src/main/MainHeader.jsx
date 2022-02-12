@@ -9,22 +9,23 @@ import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme)=>({
     appbar: {
-        //main backgroundColor: "#007ea7",
-        [theme.breakpoints.only('xs')]: {
-            backgroundColor: "yellow",
-        },
-        [theme.breakpoints.only('sm')]: {
-            backgroundColor: "orange",
-        },
-        [theme.breakpoints.only('md')]: {
-            backgroundColor: "red",
-        },
-        [theme.breakpoints.only('lg')]: {
-            backgroundColor: "blue",
-        },
-        [theme.breakpoints.only('xl')]: {
-            backgroundColor: "darkblue",
-        },
+        //main 
+        backgroundColor: "#007ea7",
+        // [theme.breakpoints.only('xs')]: {
+        //     backgroundColor: "yellow",
+        // },
+        // [theme.breakpoints.only('sm')]: {
+        //     backgroundColor: "orange",
+        // },
+        // [theme.breakpoints.only('md')]: {
+        //     backgroundColor: "red",
+        // },
+        // [theme.breakpoints.only('lg')]: {
+        //     backgroundColor: "blue",
+        // },
+        // [theme.breakpoints.only('xl')]: {
+        //     backgroundColor: "darkblue",
+        // },
     },
 
     logoImage:{

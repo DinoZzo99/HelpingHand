@@ -65,14 +65,17 @@ function SearchInput(props) {
     }
 
     const handleInput = () => {
-        navigate(`./${textValue}`);
+        navigate(`/search/${textValue}`);
     }
 
     return(
         <Grid container className={classes.column}>
-            <Grid container>
-                <Typography className={classes.tip}>Search for users, posts or categories</Typography>
-            </Grid>
+            {
+                props.input ? 
+                <Grid container>
+                    <Typography className={classes.tip}>Search for users, posts or categories</Typography>
+                </Grid> : null
+            }
             <Grid container className={classes.column}>
                 <TextField
                     id="standard-basic"
@@ -84,7 +87,7 @@ function SearchInput(props) {
                     className={classes.search}
                     onChange={handleTextValue}
                 />
-                <Button className={classes.searchBtn} onClick={() => handleInput()}>Continue</Button>
+                <Button className={classes.searchBtn} onClick={() => handleInput()}>Search {props.searchAgain ? "Again" : null}</Button>
             </Grid>
         </Grid>
     )

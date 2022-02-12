@@ -1,4 +1,4 @@
-const loginStatusReducer=(state='admin', action)=>{
+const loginStatusReducer=(state='user', action)=>{
     switch(action.type){
         case 'GUEST':
             return 'guest'

@@ -1,13 +1,13 @@
 import React from "react";
 import makeStyles from '@mui/styles/makeStyles';
-import { Grid, Tabs, Tab } from "@mui/material";
-import SearchResultTabs from "../components/SearchResultTabs";
+import { Grid, Typography } from "@mui/material";
 
 import { GetUsersByValue , GetCategoryByName , GetJobByValue, GetDonationByValue} from "../fakeAPI/FakeBackend";
 import { useParams } from "react-router-dom";
 import SearchTabsUser from "../components/SearchTabsUser";
 import SearchTabsServDona from "../components/SearchTabsServDona";
 import SearchTabsCategory from "../components/SearchTabsCategory";
+import SearchInput from "../components/SearchInput";
 
 const useStyles = makeStyles((theme)=>({
     column: {
@@ -24,8 +24,12 @@ const useStyles = makeStyles((theme)=>({
         alignItems: "flex-start"
     },
 
-    root: {
-        padding:"30px 10px",
+    rootLeft: {
+        padding:"30px 20px 0 0",
+    },
+
+    rootRight: {
+        padding:"30px 0 0 20px",
     },
 
     container: {
@@ -45,7 +49,14 @@ const useStyles = makeStyles((theme)=>({
 
     active_tab: {
         backgroundColor: "#005c7a",
-    }
+    },
+
+    tip: {
+        fontFamily:"'Raleway','sans-serif'",
+        color:"gray",
+        fontSize:"20px",
+        marginTop:"20px",
+    },
 }));
 
 function SearchResults(props) {
@@ -64,7 +75,7 @@ function SearchResults(props) {
 
     return(
         <Grid container className={classes.topLeft}>
-            <Grid xs={7} container className={classes.root}>
+            <Grid xs={7} container className={classes.rootLeft}>
                 <Grid container className={classes.container}>
                     <Grid container>
                         <Grid xs={3} container
@@ -102,16 +113,13 @@ function SearchResults(props) {
                                         <SearchTabsCategory categories={categories}/>
 
                             )
-                                //     index == 2 ? <SearchResultTabs services={services}/> :
-                                //     <SearchResultTabs/>
                         }
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid xs={5} container className={classes.root}>
-                <Grid container style={{height:"400px", backgroundColor:"lightblue"}}>
-
-                </Grid>
+            <Grid xs={5} container className={classes.rootRight}>
+                <SearchInput searchAgain={true}/>
+                <Typography className={classes.tip}>Search results for: '{keywords}'</Typography>
             </Grid>
         </Grid>
     )

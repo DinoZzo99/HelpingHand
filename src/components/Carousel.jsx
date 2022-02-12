@@ -1,8 +1,8 @@
 import React from "react";
-import { Typography } from "@mui/material";
+import { Typography, Fade } from "@mui/material";
 import makeStyles from '@mui/styles/makeStyles';
-import { Grid, Button } from "@mui/material";
-import { useNavigate, useParams } from "react-router-dom";
+import { Grid } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 import {GetCategoryById, GetServicesById} from "../fakeAPI/FakeBackend";
 
@@ -32,16 +32,29 @@ const useStyles = makeStyles((theme)=>({
     },
 
     content: {
+        position:"relative",
+        top:"0",
         padding:"10px",
         borderRadius:"5px",
         boxShadow: "0px 1px 5px #000000",
-        backgroundColor:"rgb(240,240,255)",
+        backgroundColor:"rgb(245,245,255)",
         aspectRatio: 1,
         justifyContent:"center",
         "&:hover": {
             cursor: "pointer",
-            backgroundColor:"rgb(230,230,245)",
+            backgroundColor:"rgb(238,238,255)",
         }
+    },
+
+    contentHover: {
+        position:"absolute",
+        top:"0",
+        left:"0",
+        padding:"10px",
+        borderRadius:"5px",
+        backgroundColor:"#007ea7",
+        aspectRatio: 1,
+        justifyContent:"center"
     },
 
     title: {
@@ -56,40 +69,38 @@ const useStyles = makeStyles((theme)=>({
         fontWeight: 600,
         textAlign:"center"
     },
-    
-    titleContainer: {
-        padding:"0 20px",
-        borderBottom: '1px solid rgba(0, 0, 0, .25)',
-        borderRadius: "10px 10px 0 0",
-        backgroundColor: "#005c7a",
-    },
 
     viewMore: {
-        backgroundColor: "#005c7a",
+        backgroundColor:"#007ea7",
+        color:"white",
+        "&:hover":{
+            backgroundColor: "#005c7a",
+        }
     },
 
     containerBottomText: {
+        fontFamily:"'Raleway','sans-serif'",
+    },
 
+    subtitle: {
+        fontFamily:"'Raleway','sans-serif'",
+        color:"white",
+        fontSize:"16px"
     }
 }));
 
 function Carousel(props) {
     const classes = useStyles();
+    const [hover, setHover] = React.useState(undefined);
 
     const navigate = useNavigate();
 
+    const handleHover = (value) => {
+        setHover(value);
+    }
+
     return(
-        <Grid xs={12} container className={classes.column + " " + classes.root}>
-            <Grid container className={classes.titleContainer}>
-                <Typography className={classes.title}>
-                    {
-                        props.username ? `See more from ${props.username}`
-                        : `Created Jobs`
-                    }
-                    
-                </Typography>
-            </Grid>
-            <Grid container className={classes.row}>
+        <Grid container className={classes.row}>
             {
                 props.services.filter(service => service.job_id !== props.service_id).slice(0,3).map((serviceList, index)=>{
                     let service = GetServicesById(serviceList.job_id)
@@ -97,10 +108,24 @@ function Carousel(props) {
 
                     return (
                         <Grid xs={3} container className={classes.column + " " + classes.container}>
-                            <Grid container className={classes.column + " " + classes.content} onClick={()=>navigate(`../service/${service.id}`)}>
+                            <Grid container
+                                className={classes.column + " " + classes.content}
+                                onClick={()=>navigate(`../service/${service.id}`)}
+                                onMouseEnter={() => handleHover(serviceList.job_id)}
+                                onMouseLeave={() => handleHover(undefined)}
+                            >
                                 <Typography className={classes.containerText}>{service.title}</Typography>
                                 <Typography>{category.category_name}</Typography>
                                 <Typography className={classes.containerBottomText}>{service.date_from}</Typography>
+                                <Fade in={hover == serviceList.job_id ? true : false}>
+                                    <Grid container
+                                    className={classes.column + " " + classes.contentHover}
+                                    onMouseEnter={() => handleHover(serviceList.job_id)}
+                                    onMouseLeave={() => handleHover(undefined)}
+                                    >
+                                        <Typography className={classes.subtitle}>{service.secondary}</Typography>    
+                                    </Grid>
+                                </Fade>
                             </Grid>
                         </Grid>
                     )
@@ -116,7 +141,6 @@ function Carousel(props) {
                     : null
             }
                 
-            </Grid>
         </Grid>
     )
 }

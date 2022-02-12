@@ -3,11 +3,14 @@ import categories from "../mockupData/category.json";
 
 import services from "../mockupData/service.json";
 import createdJobs from "../mockupData/created.json";
+import appliedJobs from "../mockupData/applied.json";
 
 import donations from "../mockupData/donation.json";
+import createdDonations from "../mockupData/createdDonations.json";
 
 import users from "../mockupData/user.json";
 import contacts from "../mockupData/contacts.json";
+
 
 function FakeBackend() {
 
@@ -76,6 +79,40 @@ export function GetJobByValue(value){
     return filterService;
 }
 
+export const PostService = (value) => {
+    let newServices = [...services, value];
+    services = newServices;
+    let newCreatedJob = {user_id: value.owner, job_id: value.id};
+    let newConnections = [...createdJobs, newCreatedJob];
+    createdJobs = newConnections;
+}
+
+export const UpdateService = (value) => {
+    let temp = services.filter(service => service.id != value.id);
+    let newServices = [...temp, value];
+    services = newServices;
+    let newCreatedJob = {user_id: value.owner, job_id: value.id};
+    let tempNew = createdJobs.filter(job => job.job_id != value.id);
+    let newConnection = [...tempNew, newCreatedJob];
+    createdJobs = newConnection;
+    console.log(services);
+}
+
+export const DeleteService = (id) => {
+    let newServices = services.filter(service => service.id != id);
+    let newOwner = createdJobs.filter(service => service.job_id != id);
+    services = newServices;
+    createdJobs = newOwner;
+}
+
+export function GetAppliedListByJobId(id) {
+    return appliedJobs.filter(service => service.job_id == id);
+}
+
+export function GetAppliedListByUserId(id) {
+    return appliedJobs.filter(service => service.user_id == id);
+}
+
 // users 
 
 export function GetUserByLogin(email) {
@@ -122,4 +159,19 @@ export function GetDonationByValue(value) {
 export function GetDonationsByCategory(value) {
     if(value == null) return donations;
     else return donations.filter(donation => donation.category == value);
+}
+
+export function GetDonationsById(id) {
+    return donations.find(donation => donation.id == id);
+}
+
+export function GetOwnerDonationList(id) {
+    return createdDonations.filter(donation => donation.user_id == id);
+}
+
+export const DeleteDonation = (id) => {
+    let newDonations = donations.filter(donation => donation.id != id);
+    let newDonationOwner = createdDonations.filter(donation => donation.post_id != id);
+    donations = newDonations;
+    createdDonations = newDonationOwner;
 }

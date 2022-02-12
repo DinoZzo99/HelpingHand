@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme)=>({
     root: {
         "&:hover":{
             backgroundColor:"rgb(240,240,255)",
+            cursor:"pointer"
         }
     },
     
@@ -52,13 +53,14 @@ const useStyles = makeStyles((theme)=>({
 
 function SearchTabsUser(props) {
     const classes = useStyles();
+    const navigate = useNavigate();
 
     return(
         <Grid container>
         {
             props.users.map((user) => {
                 return(
-                    <Grid container className={classes.row + " " + classes.root}>
+                    <Grid container className={classes.row + " " + classes.root} onClick={() => navigate(`/users/${user.id}`)}>
                         <Grid xs={2} container>
                             <img src={`../material/${user.profile_picture}`} className={classes.profile_picture}/>
                         </Grid>

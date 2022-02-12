@@ -18,18 +18,23 @@ const useStyles = makeStyles((theme)=>({
         justifyContent:"flex-start",
         alignItems:"center",
     },
+
+    rootContainer: {
+        paddingTop:"75px",
+    },
     
     root: {
         boxShadow: "0px 1px 5px #000000",
-        borderRadius:"10px",
-        margin:"0px 30px",
+        borderRadius:"4px",
     },
 
     mainInfoTop: {
-        borderRadius:"10px 10px 0 0",
+        position:"relative",
+        top:"0",
+        borderRadius:"4px 4px 0 0",
         backgroundColor:"#007ea7",
-        aspectRatio: 1.5,
         justifyContent:"center",
+        height: "85px",
     },
 
     mainInfoBottom: {
@@ -44,9 +49,12 @@ const useStyles = makeStyles((theme)=>({
     },
 
     profilePicture: {
+        position:"absolute",
+        top:"-75px",
         borderRadius:"200px",
         borderStyle:"solid",
-        borderColor:"white",
+        borderWidth:"4px",
+        borderColor:"#007ea7",
         [theme.breakpoints.down('xl')]: {
             height:"80px",
         },
@@ -72,7 +80,18 @@ const useStyles = makeStyles((theme)=>({
     infoText: {
         fontFamily:"'Raleway','sans-serif'",
         textAlign:"left",
-        margin:"5px 0"
+        fontSize:"14px",
+        color:"#007ea7",
+        fontWeight: 600,
+        marginBottom:"10px",
+    },
+
+    text: {
+        fontFamily:"'Raleway','sans-serif'",
+        textAlign:"left",
+        fontSize:"14px",
+        marginLeft:"5px",
+        marginBottom:"10px",
     },
 
     infoContainer: {
@@ -83,32 +102,43 @@ const useStyles = makeStyles((theme)=>({
 
 function UserInfo(props) {
     const classes = useStyles();
-    const [user, setUser] = React.useState(props.user);
-    const [viewType, setViewType] = React.useState(props.type);
 
     const navigate = useNavigate();
 
     return(
-        <Grid xs={12} container className={classes.column + " " + classes.root}>
-            <Grid container className={classes.column + " " + classes.mainInfoTop}>
-                <img src={`../material/${user.profile_picture}`} className={classes.profilePicture}/>
-            </Grid>
-            <Grid container className={classes.column + " " + classes.mainInfoBottom}>
-                <Typography className={classes.nametext}>{user.name} {user.lastname}</Typography>
-            </Grid>
-            <Grid container className={classes.column}>
-                <Grid container className={classes.column + " " + classes.infoContainer}>
-                <Typography className={classes.infoText}>Username: {user.username}</Typography>
-                <Typography className={classes.infoText}>e-mail: {user.email}</Typography>
-                <Typography className={classes.infoText}>Gender: {user.gender}</Typography>
-                <Typography className={classes.infoText}>Location: {user.location}</Typography>
-                <Typography className={classes.infoText}>Status: {user.status ? "active" : "not job"}</Typography>
+        <Grid container className={classes.rootContainer}>
+            <Grid container className={classes.column + " " + classes.root}>
+                <Grid container className={classes.column + " " + classes.mainInfoTop}>
+                    <img src={`../material/${props.user.profile_picture}`} className={classes.profilePicture}/>
                 </Grid>
-                {
-                    viewType === 'service' ? <Button className={classes.btn} onClick={() => navigate(`../users/${user.id}`)}>view user</Button> : null
-                }
+                <Grid container className={classes.column + " " + classes.mainInfoBottom}>
+                    <Typography className={classes.nametext}>{props.user.name} {props.user.lastname}</Typography>
+                </Grid>
+                <Grid container className={classes.column}>
+                    <Grid container className={classes.column + " " + classes.infoContainer}>
+                        <Grid container>
+                            <Typography className={classes.infoText}>Username:</Typography><Typography className={classes.text}>{props.user.username}</Typography>
+                        </Grid>
+                        <Grid container>
+                            <Typography className={classes.infoText}>e-mail:</Typography><Typography className={classes.text}>{props.user.email}</Typography>
+                        </Grid>
+                        <Grid container>
+                            <Typography className={classes.infoText}>Gender:</Typography><Typography className={classes.text}>{props.user.gender}</Typography>
+                        </Grid>
+                        <Grid container>
+                            <Typography className={classes.infoText}>Location:</Typography><Typography className={classes.text}>{props.user.location}</Typography>
+                        </Grid>
+                        <Grid container>
+                            <Typography className={classes.infoText}>Status:</Typography><Typography className={classes.text}>{props.user.status ? "active" : "not job"}</Typography>
+                        </Grid>
+                    </Grid>
+                    {
+                        props.type === 'service' ? <Button className={classes.btn} onClick={() => navigate(`../users/${props.user.id}`)}>view user</Button> : null
+                    }
+                </Grid>
             </Grid>
         </Grid>
+        
     )
 }
 

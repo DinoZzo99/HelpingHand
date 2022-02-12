@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme)=>({
         alignItems:"flex-start",
         "&:hover":{
             backgroundColor:"rgb(240,240,255)",
+            cursor:"pointer"
         }
     },
 
@@ -64,6 +65,7 @@ const useStyles = makeStyles((theme)=>({
 
 function SearchTabsServDona(props) {
     const classes = useStyles();
+    const navigate = useNavigate();
 
     return(
         <Grid container>
@@ -71,7 +73,7 @@ function SearchTabsServDona(props) {
             props.jobs.map((job) => {
                 const user = GetUserById(job.owner);
                 return(
-                    <Grid container className={classes.column + " " + classes.root}>
+                    <Grid container className={classes.column + " " + classes.root} onClick={() => navigate(`/${props.index == 2 ? "donation" : "service"}/${job.id}`)}>
                         <Typography className={classes.title}>{job.title}</Typography>
                         <Typography className={classes.subtitle}>{job.secondary}</Typography>
                         {props.index == 2 ? <Typography className={classes.subtitle}>{job.payment}</Typography> : null}
@@ -83,7 +85,7 @@ function SearchTabsServDona(props) {
             })
         }
         {
-            props.jobs.length > 0 ? null : <Typography className={classes.notfound}>No services found</Typography>
+            props.jobs.length > 0 ? null : <Typography className={classes.notfound}>No {props.index == 1 ? "services" : "donations"} found</Typography>
         }
 
         </Grid>

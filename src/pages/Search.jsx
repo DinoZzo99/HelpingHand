@@ -5,6 +5,10 @@ import SearchInput from "../components/SearchInput";
 
 const useStyles = makeStyles((theme)=>({
     root: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-start",
+        alignItems: "center",
         marginTop:"40px",
     },
 }));
@@ -15,10 +19,7 @@ function Search(props) {
     return(
         <Grid container className={classes.root}>
             <Grid xs={6} container>
-                hi
-            </Grid>
-            <Grid xs={6} container>
-                <SearchInput/>
+                <SearchInput input={true}/>
             </Grid>
         </Grid>
     )

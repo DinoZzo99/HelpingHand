@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme)=>({
     root: {
         "&:hover":{
             backgroundColor:"rgb(240,240,255)",
+            cursor:"pointer"
         }
     },
 
@@ -37,13 +38,14 @@ const useStyles = makeStyles((theme)=>({
 
 function SearchTabsCategory(props) {
     const classes = useStyles();
+    const navigate = useNavigate();
 
     return(
         <Grid container>
         {
             props.categories.map((category) => {
                 return(
-                    <Grid container className={classes.row + " " + classes.root}>
+                    <Grid container className={classes.row + " " + classes.root} onClick={() => navigate(`/category/${category.category_id}`)}>
                             <Typography className={classes.title}>{category.category_name}</Typography>
                     </Grid>
                 )

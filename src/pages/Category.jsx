@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography } from "@mui/material";
 import makeStyles from '@mui/styles/makeStyles';
-import { Grid } from "@mui/material";
+import { Grid, Divider } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import {GetServiceCategories, GetDonationCategories} from "../fakeAPI/FakeBackend";
@@ -19,11 +19,6 @@ const useStyles = makeStyles((theme)=>({
         flexDirection: "row",
         justifyContent:"flex-start",
         alignItems:"center",
-    },
-
-    root: {
-        borderLeft: '1px solid rgba(0, 0, 0, .25)',
-        borderRight: '1px solid rgba(0, 0, 0, .25)',
     },
 
     tabs: {
@@ -82,6 +77,18 @@ const useStyles = makeStyles((theme)=>({
         fontSize:"16px",
         padding:"8px",
     },
+
+    titleContainer: {
+        justifyContent:"space-between",
+        padding:"20px 20px 0 20px",
+    },
+    
+    title: {
+        fontFamily:"'Raleway','sans-serif'",
+        fontSize:"32px",
+        fontWeight:"bold",
+        color:"#005c7a",
+    },
 }));
 
 function Category(props) {
@@ -101,7 +108,11 @@ function Category(props) {
     }
 
     return(
-        <Grid xs={12} container className={classes.column + " " + classes.root}>
+        <Grid xs={12} container className={classes.column}>
+            <Grid container className={classes.titleContainer}>
+                <Typography className={classes.title}>Categories</Typography>
+            </Grid>
+            <Divider style={{width:"100%"}}/>
             <Grid className={classes.row + " " + classes.tabs}>
                 <Grid
                     container
@@ -123,7 +134,7 @@ function Category(props) {
                     categories.map((category, index)=>{
                         return (
                             <Grid xs={4} container className={classes.column + " " + classes.categoryContainer}>
-                                <Grid container className={classes.column + " " + classes.category} onClick={() => navigate(`../services/${category.category_id}`)}>
+                                <Grid container className={classes.column + " " + classes.category} onClick={() => navigate(`../${expanded == 1 ? "donations" : "services"}/${category.category_id}`)}>
                                     <Grid container className={classes.iconContainer}>
                                     </Grid>
                                     <Typography className={classes.categoryTypo}>

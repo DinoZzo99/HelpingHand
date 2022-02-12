@@ -133,7 +133,8 @@ function Contacts(props){
     };
 
     const handleNavigation = (value) => {
-        navigate(`./users/${value}`)
+        navigate(`./users/${value}`);
+        setExpanded(false);
     }
 
 

@@ -68,7 +68,7 @@ function JobFilter(props){
     };
 
     return(
-        <Grid xcontainer className={classes.column + " " + classes.root}>
+        <Grid container className={classes.column + " " + classes.root}>
             <Grid container className={classes.column}>
                 <Grid container className={classes.row}>
                     <Typography>Sort By</Typography>

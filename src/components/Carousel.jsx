@@ -4,7 +4,7 @@ import makeStyles from '@mui/styles/makeStyles';
 import { Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-import {GetCategoryById, GetServicesById} from "../fakeAPI/FakeBackend";
+import {GetCategoryById, GetDonationsById, GetServicesById} from "../fakeAPI/FakeBackend";
 
 const useStyles = makeStyles((theme)=>({
     column: {
@@ -28,7 +28,15 @@ const useStyles = makeStyles((theme)=>({
     },
 
     container: {
-        padding:"20px",
+        [theme.breakpoints.only('xl')]: {
+            padding:"15px",
+        },
+        [theme.breakpoints.down('xl')]: {
+            padding:"10px",
+        },
+        [theme.breakpoints.only('sm')]: {
+            padding:"15px",
+        },
     },
 
     content: {
@@ -42,32 +50,24 @@ const useStyles = makeStyles((theme)=>({
         justifyContent:"center",
         "&:hover": {
             cursor: "pointer",
-            backgroundColor:"rgb(238,238,255)",
-        }
-    },
-
-    contentHover: {
-        position:"absolute",
-        top:"0",
-        left:"0",
-        padding:"10px",
-        borderRadius:"5px",
-        backgroundColor:"#007ea7",
-        aspectRatio: 1,
-        justifyContent:"center"
-    },
-
-    title: {
-        fontFamily:"'Raleway','sans-serif'",
-        fontSize:"24px",
-        color: "white",
+            backgroundColor:"rgb(228,228,250)",
+        },
     },
 
     containerText: {
         fontFamily:"'Raleway','sans-serif'",
         fontSize:"20px",
         fontWeight: 600,
-        textAlign:"center"
+        textAlign:"center",
+        [theme.breakpoints.only('xl')]: {
+            fontSize:"20px",
+        },
+        [theme.breakpoints.down('xl')]: {
+            fontSize:"18px",
+        },
+        [theme.breakpoints.down('xs')]: {
+            fontSize:"14px"
+        },
     },
 
     viewMore: {
@@ -80,52 +80,48 @@ const useStyles = makeStyles((theme)=>({
 
     containerBottomText: {
         fontFamily:"'Raleway','sans-serif'",
+        [theme.breakpoints.down('xs')]: {
+            fontSize:"12px"
+        },
     },
 
-    subtitle: {
+    categoryText: {
         fontFamily:"'Raleway','sans-serif'",
-        color:"white",
-        fontSize:"16px"
+        textAlign:"center",
+        [theme.breakpoints.only('xl')]: {
+            fontSize:"16px",
+        },
+        [theme.breakpoints.down('xl')]: {
+            fontSize:"14px",
+        },
+        [theme.breakpoints.down('xs')]: {
+            fontSize:"12px"
+        },
+        
     }
 }));
 
 function Carousel(props) {
     const classes = useStyles();
-    const [hover, setHover] = React.useState(undefined);
 
     const navigate = useNavigate();
-
-    const handleHover = (value) => {
-        setHover(value);
-    }
 
     return(
         <Grid container className={classes.row}>
             {
                 props.services.filter(service => service.job_id !== props.service_id).slice(0,3).map((serviceList, index)=>{
-                    let service = GetServicesById(serviceList.job_id)
+                    let service = props.isService ? GetServicesById(serviceList.job_id) : GetDonationsById(serviceList.post_id);
                     let category = GetCategoryById(service.category);
 
                     return (
-                        <Grid xs={3} container className={classes.column + " " + classes.container}>
+                        <Grid lg={3} md={4} xs={6} container item className={classes.container}>
                             <Grid container
                                 className={classes.column + " " + classes.content}
                                 onClick={()=>navigate(`../service/${service.id}`)}
-                                onMouseEnter={() => handleHover(serviceList.job_id)}
-                                onMouseLeave={() => handleHover(undefined)}
                             >
                                 <Typography className={classes.containerText}>{service.title}</Typography>
-                                <Typography>{category.category_name}</Typography>
-                                <Typography className={classes.containerBottomText}>{service.date_from}</Typography>
-                                <Fade in={hover == serviceList.job_id ? true : false}>
-                                    <Grid container
-                                    className={classes.column + " " + classes.contentHover}
-                                    onMouseEnter={() => handleHover(serviceList.job_id)}
-                                    onMouseLeave={() => handleHover(undefined)}
-                                    >
-                                        <Typography className={classes.subtitle}>{service.secondary}</Typography>    
-                                    </Grid>
-                                </Fade>
+                                <Typography className={classes.categoryText}>{category.category_name}</Typography>
+                                <Typography className={classes.containerBottomText}>{props.isService ? service.date_from : service.date_due}</Typography>
                             </Grid>
                         </Grid>
                     )
@@ -133,7 +129,7 @@ function Carousel(props) {
             }
             {
                 props.services.filter(service => service.job_id !== props.service_id).length > 3 ? 
-                    <Grid xs={3} container className={classes.column + " " + classes.container}>
+                    <Grid lg={3} md={4} xs={6} container className={classes.column + " " + classes.container}>
                         <Grid container className={classes.column + " " + classes.content+ " " + classes.viewMore}>
                             <Typography className={classes.containerText}>View More</Typography>
                         </Grid>

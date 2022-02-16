@@ -60,16 +60,16 @@ const useStyles = makeStyles((theme)=>({
         }
     },
     
-    root: {
-        padding:"5px 40px 20px 40px",
-    },
-    
     mainTitle: {
         fontFamily:"'Raleway','sans-serif'",
         fontSize:"32px",
         fontWeight:"bold",
         color:"#005c7a",
-        padding:"15px 20px"
+        padding:"15px 20px",
+        [theme.breakpoints.down('md')]:{
+            fontSize:"24px",
+            padding:"10px 20px"
+        }
     },
 
     mainSubtitle: {
@@ -77,6 +77,11 @@ const useStyles = makeStyles((theme)=>({
         fontSize:"20px",
         fontWeight:"bold",
         color:"#007ea7",
+        margin:"5px 0 20px 40px",
+        [theme.breakpoints.down('md')]:{
+            fontSize:"18px",
+            margin:"5px 0 5px 30px"
+        }
     },
 
     iconStyle: {
@@ -85,8 +90,26 @@ const useStyles = makeStyles((theme)=>({
     },
 
     addbtn: {
-        margin:"15px 20px"
-    }
+        margin:"15px 20px",
+        [theme.breakpoints.down('sm')]:{
+            margin:"5px 20px"
+        }
+    },
+
+    hideBig: {
+        display:"flex",
+        flexDirection:"row",
+        justifyContent:"flex-end",
+        [theme.breakpoints.up('sm')]:{
+            visibility:"hidden"
+        }
+    },
+
+    hideSmall: {
+        [theme.breakpoints.down('sm')]:{
+            visibility:"hidden"
+        }
+    },
 }));
 
 const Accordion = styled((props) => (
@@ -166,90 +189,100 @@ function EditJobs(props) {
     };
 
     return(
-        <Grid container className={classes.column}>
-            <Grid container className={classes.row}>
-                <Typography className={classes.mainTitle}>Select post</Typography>
-                <Button variant="contained" color="primary" className={classes.addbtn}>
-                    <AddCircleIcon className={classes.iconStyle} onClick={() => navigate("/create-post")}/>
-                    Add Post
-                </Button>
-            </Grid>
-            <Divider style={{width:"100%"}}/>
-            <Grid container className={classes.column + " " + classes.root}>
-                <Grid container>
-                    <Typography className={classes.mainSubtitle}>Services</Typography>
+        <Grid container direction="row" justifyContent="center">
+            <Grid xl={7} lg={8} md={11} container item>
+                <Grid container item className={classes.row}>
+                    <Typography className={classes.mainTitle}>Select post</Typography>
+                    <Button variant="contained" color="primary" className={classes.addbtn} onClick={() => navigate("/create-post")}>
+                        <AddCircleIcon className={classes.iconStyle}/>
+                        Add Post
+                    </Button>
                 </Grid>
-                <Grid xs={8} container className={classes.column}>
-                    {
-                        createdPosts.map((postInfo) => {
-                            let post = GetServicesById(postInfo.job_id);
-                            return(
-                                <Accordion style={{width:"100%"}} expanded={expanded == post.id} onChange={handleChange(post.id)}>
-                                    <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                                        <Grid container className={classes.row}>
-                                            <Typography>{post.title}</Typography>
-                                            <Grid>
+                <Divider style={{width:"100%"}}/>
+                <Grid container item direction="row" justifyContent="center">
+                    <Grid container item>
+                        <Typography className={classes.mainSubtitle}>Services</Typography>
+                    </Grid>
+                    <Grid md={8} sm={10} xs={11} container item>
+                        {
+                            createdPosts.map((postInfo) => {
+                                let post = GetServicesById(postInfo.job_id);
+                                return(
+                                    <Accordion style={{width:"100%"}} expanded={expanded == post.id} onChange={handleChange(post.id)}>
+                                        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+                                            <Grid container className={classes.row}>
+                                                <Typography>{post.title}</Typography>
+                                                <Grid className={classes.hideSmall}>
+                                                    <EditIcon className={classes.iconStyle} color="primary" onClick={() => navigate(`/edit-post/service/${post.id}`)}/>
+                                                    <DeleteForeverIcon className={classes.iconStyle} style={{color:"red"}} onClick={() => handleSetPost(true)}/>
+                                                </Grid>
+                                            </Grid>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <Typography>{post.secondary}</Typography>
+                                            <Grid className={classes.hideBig}>
                                                 <EditIcon className={classes.iconStyle} color="primary" onClick={() => navigate(`/edit-post/service/${post.id}`)}/>
                                                 <DeleteForeverIcon className={classes.iconStyle} style={{color:"red"}} onClick={() => handleSetPost(true)}/>
                                             </Grid>
-                                        </Grid>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        <Typography>{post.secondary}</Typography>
-                                    </AccordionDetails>
-                                </Accordion>
-                            )
-                        })
-                    }
-                </Grid> 
+                                        </AccordionDetails>
+                                    </Accordion>
+                                )
+                            })
+                        }
+                    </Grid> 
+                </Grid>
+                <Divider style={{width:"100%", marginTop:"20px"}}/>
+                <Grid container item direction="row" justifyContent="center">
+                    <Grid container item>
+                        <Typography className={classes.mainSubtitle}>Donations</Typography>
+                    </Grid>
+                    <Grid md={8} sm={10} xs={11} container item>
+                        {
+                            createdDonations.map((postInfo) => {
+                                let post = GetDonationsById(postInfo.post_id);
+                                return(
+                                    <Accordion style={{width:"100%"}} expanded={expanded2 == post.id} onChange={handleChange2(post.id)}>
+                                        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+                                            <Grid container item className={classes.row}>
+                                                <Typography>{post.title}</Typography>
+                                                <Grid className={classes.hideSmall}>
+                                                    <EditIcon className={classes.iconStyle} color="primary" onClick={() => navigate(`/edit-post/service/${post.id}`)}/>
+                                                    <DeleteForeverIcon className={classes.iconStyle} style={{color:"red"}} onClick={() => handleSetPost(true)}/>
+                                                </Grid>
+                                            </Grid>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <Typography>{post.secondary}</Typography>
+                                            <Grid className={classes.hideBig}>
+                                                <EditIcon className={classes.iconStyle} color="primary" onClick={() => navigate(`/edit-post/service/${post.id}`)}/>
+                                                <DeleteForeverIcon className={classes.iconStyle} style={{color:"red"}} onClick={() => handleSetPost(true)}/>
+                                            </Grid>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                )
+                            })
+                        }
+                    </Grid> 
+                </Grid>
+                <Dialog
+                    open={openDialog}
+                    onClose={() => handleDialog(false)}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle>Delete</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Are you sure you want to delete the post?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => handleDelete()}>Yes</Button>
+                        <Button onClick={() => handleDialog(false)} autoFocus>No</Button>
+                    </DialogActions>
+                </Dialog>
             </Grid>
             
-            <Divider style={{width:"100%"}}/>
-            <Grid container className={classes.column + " " + classes.root}>
-                <Grid container>
-                    <Typography className={classes.mainSubtitle}>Donations</Typography>
-                </Grid>
-                <Grid xs={8} container className={classes.column}>
-                    {
-                        createdDonations.map((postInfo) => {
-                            let post = GetDonationsById(postInfo.post_id);
-                            return(
-                                <Accordion style={{width:"100%"}} key={postInfo.post_id} expanded={expanded2 == post.id} onChange={handleChange2(post.id)}>
-                                    <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                                        <Grid container className={classes.row}>
-                                            <Typography>{post.title}</Typography>
-                                            <Grid>
-                                                <EditIcon className={classes.iconStyle} color="primary" onClick={() => navigate(`/edit-post/donation/${post.id}`)}/>
-                                                <DeleteForeverIcon className={classes.iconStyle} style={{color:"red"}} onClick={() => handleSetPost(false)}/>
-                                            </Grid>
-                                        </Grid>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        <Typography>{post.secondary}</Typography>
-                                    </AccordionDetails>
-                                </Accordion>
-                            )
-                        })
-                    }
-                </Grid> 
-            </Grid>
-            <Dialog
-                open={openDialog}
-                onClose={() => handleDialog(false)}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle>Delete</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Are you sure you want to delete the post?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => handleDelete()}>Yes</Button>
-                    <Button onClick={() => handleDialog(false)} autoFocus>No</Button>
-                </DialogActions>
-            </Dialog>
         </Grid>
     )
 }

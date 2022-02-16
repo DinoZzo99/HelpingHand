@@ -13,20 +13,24 @@ const useStyles = makeStyles((theme)=>({
         alignItems: "center"
     },
 
+    root: {
+        padding:"10px",
+        "&:hover":{
+            cursor:"pointer",
+            backgroundColor:"rgb(240,240,255)",
+        }
+    },
+
     row: {
         display: "flex",
         flexDirection: "row",
-        justifyContent:"flex-start",
+        justifyContent:"space-between",
         alignItems:"center",
     },
 
-    root: {
-        padding:"15px 20px",
-        alignItems:"flex-start",
-        "&:hover":{
-            backgroundColor:"rgb(240,240,255)",
-            cursor:"pointer"
-        }
+    paymentStyle: {
+        padding:"0 20px",
+        justifyContent:"flex-end",
     },
 
     notfound: {
@@ -35,31 +39,44 @@ const useStyles = makeStyles((theme)=>({
         color:"gray",
         margin:"15px"
     },
-    
+
     title: {
-        fontFamily: "'Raleway','sans-serif'",
+        fontFamily:"'Raleway','sans-serif'",
         fontSize:"24px",
-        fontWeight: 600,
-        margin: "5px 0 5px 20px",
-        color: "#005c7a",
+        fontWeight:"bold",
+        color:"#005c7a",
+        marginLeft:"20px",
+        [theme.breakpoints.only('xl')]: {
+            fontSize:"24px"
+        },
+        [theme.breakpoints.down('lg')]: {
+            fontSize:"18px"
+        },
     },
 
     subtitle: {
-        fontFamily: "'Raleway','sans-serif",
-        fontSize:"18px",
+        fontFamily:"'Raleway','sans-serif'",
+        fontWeight:500,
+        margin:"5px 0 10px 40px",
+        [theme.breakpoints.only('xl')]: {
+            fontSize:"18px"
+        },
+        [theme.breakpoints.only('lg')]: {
+            fontSize:"16px"
+        },
+        [theme.breakpoints.down('sm')]: {
+            fontSize:"14px"
+        }
     },
 
-    userText: {
-        fontFamily: "'Raleway','sans-serif",
-        fontSize:"16px",
-        color: "#005c7a",
-    },
-
-    usericon: {
-        fontSize:"20px",
-        color:"gray",
-        marginRight:"5px",
-        color: "#005c7a",
+    userContainer: {
+        justifyContent:"flex-end",
+        paddingRight:"20px",
+        color:"#005c7a",
+        [theme.breakpoints.down('xs')]:{
+            marginLeft:"25px",
+            justifyContent:"flex-start"
+        }
     }
 }));
 
@@ -73,12 +90,30 @@ function SearchTabsServDona(props) {
             props.jobs.map((job) => {
                 const user = GetUserById(job.owner);
                 return(
-                    <Grid container className={classes.column + " " + classes.root} onClick={() => navigate(`/${props.index == 2 ? "donation" : "service"}/${job.id}`)}>
-                        <Typography className={classes.title}>{job.title}</Typography>
-                        <Typography className={classes.subtitle}>{job.secondary}</Typography>
-                        {props.index == 2 ? <Typography className={classes.subtitle}>{job.payment}</Typography> : null}
-                        <Grid container className={classes.row}>
-                            <AccountCircleIcon className={classes.usericon}/><Typography className={classes.userText}>{user.username}</Typography>
+                    <Grid container className={classes.root} onClick={() => navigate(`/${props.index == 1 ? "service" : "donation"}/${job.id}`)}>
+                        <Grid container className={classes.column}>
+                            <Grid container className={classes.row}>
+                                <Grid xs={7}>
+                                    <Typography className={classes.title}>{job.title}</Typography>
+                                </Grid>
+                                <Grid xs={5} container className={classes.userContainer}>
+                                    <AccountCircleIcon/>
+                                    <Typography>{user.username}</Typography>
+                                </Grid>
+                            </Grid>
+                            <Divider style={{width:"100%"}}/>
+                            <Grid container>
+                                <Typography className={classes.subtitle}>{job.secondary}</Typography>
+                            </Grid>
+                            <Grid container>
+                                {
+                                    props.index == 2 ?
+                                    <Grid container className={classes.row + " " + classes.paymentStyle}>
+                                        <Typography>{job.payment}</Typography>
+                                    </Grid>
+                                    : null
+                                }
+                            </Grid>
                         </Grid>
                     </Grid>
                 )

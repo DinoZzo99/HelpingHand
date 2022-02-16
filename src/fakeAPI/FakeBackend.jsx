@@ -113,6 +113,24 @@ export function GetAppliedListByUserId(id) {
     return appliedJobs.filter(service => service.user_id == id);
 }
 
+export function CheckServiceInList(service_id, user_id){
+    let check = appliedJobs.find(job => job.job_id == service_id && job.user_id == user_id);
+    return check ? true : false;
+}
+
+export const PostApplied = (serviceId, userId) => {
+    let newApplied = { job_id: serviceId, user_id: userId };
+    let newAppliedJobs = [...appliedJobs, newApplied];
+    appliedJobs = newAppliedJobs;
+}
+
+export const DeleteApplied = (serviceId, userId) => {
+    console.log(appliedJobs);
+    let newAppliedJobs = appliedJobs.filter(job => job.user_id != userId || job.job_id != serviceId);
+    appliedJobs = newAppliedJobs;
+    console.log(appliedJobs);
+}
+
 // users 
 
 export function GetUserByLogin(email) {
@@ -174,4 +192,25 @@ export const DeleteDonation = (id) => {
     let newDonationOwner = createdDonations.filter(donation => donation.post_id != id);
     donations = newDonations;
     createdDonations = newDonationOwner;
+}
+
+export const UpdateDonation = (amount, id) => {
+    let oldDonation = donations.find(donation => donation.id == id);
+    let payment = parseFloat(oldDonation.current_payment);
+    console.log(amount);
+    console.log(payment);
+    let newDonation = {
+        id: oldDonation.id,
+        title: oldDonation.title,
+        secondary: oldDonation.secondary,
+        body: oldDonation.body,
+        date_due: oldDonation.date_due,
+        payment: oldDonation.payment,
+        current_payment: oldDonation.current_payments + amount,
+        owner: oldDonation.owner,
+        category: oldDonation.category
+    };
+    let donationList = donations.filter(donation => donation.id != id);
+    let newDonationList = [...donationList, newDonation];
+    donations = newDonationList;
 }

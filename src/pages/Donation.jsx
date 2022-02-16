@@ -1,16 +1,13 @@
 import React from "react";
-import { Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Typography } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Typography } from "@mui/material";
 import makeStyles from '@mui/styles/makeStyles';
-import { Grid } from "@mui/material";
+import { Grid, FormControl, OutlinedInput, InputAdornment } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
-import UserInfo from "../components/UserInfo";
 import Carousel from "../components/Carousel";
 
-import {CheckServiceInList, DeleteApplied, GetAppliedListByJobId, GetServicesById, PostApplied} from "../fakeAPI/FakeBackend";
+import {GetDonationsById, GetOwnerDonationList, UpdateDonation} from "../fakeAPI/FakeBackend";
 import {GetUserById} from "../fakeAPI/FakeBackend";
-import {GetOwnerServiceList} from "../fakeAPI/FakeBackend";
 import {GetCategoryById} from "../fakeAPI/FakeBackend";
-import SearchTabsUser from "../components/SearchTabsUser";
 import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme)=>({
@@ -102,13 +99,9 @@ const useStyles = makeStyles((theme)=>({
         fontSize:"16px",
     },
 
-    actionbtn: {
-        padding:"20px 0",
-        textAlign:"center",
-        "&:hover": {
-            cursor:"pointer",
-            backgroundColor:"rgb(228,228,250)",
-        }
+    donationButton: {
+        marginLeft:"15px",
+        fontSize:"12px"
     },
 
     btngroup: {
@@ -117,55 +110,36 @@ const useStyles = makeStyles((theme)=>({
     }
 }));
 
-function Service(props) {
+function Donation(props) {
     const classes = useStyles();
     const {id} = useParams();
     const [openDialog, setOpenDialog] = React.useState(false);
-    const [openCancleDialog, setOpenCancleDialog] = React.useState(false);
-    const userId = useSelector(state => state.userId);
+    const [amount, setAmount] = React.useState(null);
 
-    const navigate = useNavigate();
-
-    const service = GetServicesById(id);
-    const user = GetUserById(service.owner);
-    const serviceList = GetOwnerServiceList(service.owner);
-    const category = GetCategoryById(service.category);
-    const applied = GetAppliedListByJobId(id);
-    const appliedUsers = applied.map(user => {
-        return GetUserById(user.user_id);
-    })
-    const [checkApplied, setCheckApplied] = React.useState(CheckServiceInList(id, userId));
+    const donation = GetDonationsById(id);
+    const user = GetUserById(donation.owner);
+    const donationList = GetOwnerDonationList(donation.owner);
+    const category = GetCategoryById(donation.category);
 
     const handleDialog = (value) => {
         setOpenDialog(value);
     };
-
-    const handleCancleDialog = (value) => {
-        setOpenCancleDialog(value);
+    const handleAmount = (event) => {
+        setAmount(event.target.value);
     };
-
-    const handleApply = () => {
-        PostApplied(id, userId);
-        setCheckApplied(true);
+    const handleDonation = () => {
+        let flt = parseFloat(amount);
+        UpdateDonation(flt, id);
+        setAmount(null);
         setOpenDialog(false);
     };
-
-    const handleCancleApply = () => {
-        DeleteApplied(id, userId);
-        setCheckApplied(false);
-        setOpenCancleDialog(false);
-    };
-
-    const handleAppliedButton = () => {
-        checkApplied ? handleCancleDialog(true) : handleDialog(true);
-    }
 
     return(
         <Grid container direction="row" justifyContent="center">
             <Grid xl={7} lg={8} md={11} container item direction="row" justifyContent="center" alignItems="center">
                 <Grid container item direction="row" alignItems="center" className={classes.titleContainer}>
                     <Grid sm={6} container item>
-                        <Typography className={classes.title}>{service.title}</Typography>
+                        <Typography className={classes.title}>{donation.title}</Typography>
                     </Grid>
                     <Grid sm={6} container item direction="row" justifyContent="flex-end" alignItems="center">
                         <img className={classes.profile_picture} src={`../material/${user.profile_picture}`} alt="profile"/>
@@ -190,7 +164,25 @@ function Service(props) {
                             <Typography className={classes.bodyText + " " + classes.subtitle}>Subtitle:</Typography>
                         </Grid>
                         <Grid min={9} container item>
-                            <Typography className={classes.bodyText}>{service.secondary}</Typography>
+                            <Typography className={classes.bodyText}>{donation.secondary}</Typography>
+                        </Grid>
+                    </Grid>
+                    <Grid container className={classes.row}>
+                        <Grid min={3} container item className={classes.row + " " + classes.leftGrid}>
+                            <Typography className={classes.bodyText + " " + classes.subtitle}>Donated:</Typography>
+                        </Grid>
+                        <Grid min={9} container item>
+                            <Typography className={classes.bodyText}>
+                                $ {donation.current_payment}/{donation.payment}
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    className={classes.donationButton}
+                                    onClick={() => handleDialog(true)}
+                                >
+                                    Donate
+                                </Button>
+                            </Typography>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -200,36 +192,15 @@ function Service(props) {
                 </Grid>
                 <Grid sm={10} min={11} container>
                     <Typography className={classes.bodyText}>
-                        {service.body}
+                        {donation.body}
                     </Typography>
                 </Grid>
                 <Divider style={{width:"100%", marginTop:"20px"}}/>
                 <Grid container>
-                    <Typography className={classes.subtitle + " " + classes.subtitleExtra}>Action</Typography>
-                </Grid>
-                <Grid sm={10} min={11} container item direction="row" justifyContent="center" className={classes.btngroup}>
-                    <Grid xs={4} className={classes.actionbtn + " " + classes.subtitleblack} item onClick={() => handleAppliedButton()}>{checkApplied ? "Applied" : "Apply"}</Grid>
-                    <Grid xs={4} className={classes.actionbtn + " " + classes.subtitleblack} item onClick={() => navigate(`/users/${user.id}`)}>View {user.name}</Grid>
-                    <Grid xs={4} className={classes.actionbtn + " " + classes.subtitleblack} item onClick={() => navigate(`/services/${category.category_id}`)}>View category</Grid>
-                </Grid>
-                {
-                    applied.length > 0 ?
-                        <Grid container item>
-                            <Divider style={{width:"100%"}}/>
-                            <Grid container item>
-                                <Typography className={classes.subtitle + " " + classes.subtitleExtra}>Applicants</Typography>
-                            </Grid>
-                            <Grid lg={10} sm={11} min={6} container item direction="row" justifyContent="column">
-                                <SearchTabsUser users={appliedUsers}/>
-                            </Grid>
-                        </Grid> : null
-                }
-                <Divider style={{width:"100%", marginTop:"20px"}}/>
-                <Grid container>
-                    <Typography className={classes.subtitle + " " + classes.subtitleExtra}>More posts from {user.name}</Typography>
+                    <Typography className={classes.subtitle + " " + classes.subtitleExtra}>More donations from {user.name}</Typography>
                 </Grid>
                 <Grid container className={classes.container}>
-                    <Carousel services={serviceList} username={user.username} service_id={service.id}/>
+                    <Carousel services={donationList} username={user.username} service_id={donation.id}/>
                 </Grid>
             </Grid>
             <Dialog
@@ -238,33 +209,26 @@ function Service(props) {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle>Apply for service</DialogTitle>
+                <DialogTitle>Donate - {donation.title}</DialogTitle>
                 <DialogContent style={{minWidth:"250px"}}>
                     <DialogContentText>
-                        {service.title}
+                        <FormControl fullWidth variant="outlined">
+                            <OutlinedInput
+                                id="outlined-adornment-amount"
+                                value={amount}
+                                onChange={handleAmount}
+                                startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                            />
+                        </FormControl>
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => handleApply()}>Apply</Button>
+                    <Button onClick={() => handleDonation()}>Donate</Button>
                     <Button autoFocus onClick={() => handleDialog(false)}>Close</Button>
-                </DialogActions>
-            </Dialog>
-            <Dialog
-                open={openCancleDialog}
-                onClose={() => handleCancleDialog(false)}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle>Are you sure you want to cancle your application?</DialogTitle>
-                <DialogContent style={{width:"250px"}}>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => handleCancleApply()}>Yes</Button>
-                    <Button autoFocus onClick={() => handleCancleDialog(false)}>No</Button>
                 </DialogActions>
             </Dialog>
         </Grid>
     )
 }
 
-export default Service;
+export default Donation;

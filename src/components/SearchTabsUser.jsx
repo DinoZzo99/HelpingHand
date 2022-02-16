@@ -29,13 +29,19 @@ const useStyles = makeStyles((theme)=>({
     
     profile_picture: {
         height:"60px",
-        margin:"10px 20px",
         borderRadius:"100px",
+        margin:"10px 20px",
+        [theme.breakpoints.down('md')]:{
+            height:"45px",
+        }
     },
 
     name: {
         fontFamily: "'Raleway','sans-serif",
         fontSize:"16px",
+        [theme.breakpoints.down('md')]:{
+            fontSize:"14px"
+        }
     },
 
     notfound: {
@@ -47,7 +53,6 @@ const useStyles = makeStyles((theme)=>({
 
     userinfo: {
         alignItems:"flex-start",
-        paddingLeft:"10px"
     },
 }));
 
@@ -60,11 +65,9 @@ function SearchTabsUser(props) {
         {
             props.users.map((user) => {
                 return(
-                    <Grid container className={classes.row + " " + classes.root} onClick={() => navigate(`/users/${user.id}`)}>
-                        <Grid xs={2} container>
-                            <img src={`../material/${user.profile_picture}`} className={classes.profile_picture}/>
-                        </Grid>
-                        <Grid xs={10} container className={classes.column + " " + classes.userinfo}>
+                    <Grid sm={6} container item direction="row" justifyContent="flex-start" alignItems="center" className={classes.root} onClick={() => navigate(`/users/${user.id}`)}>
+                        <img src={`../material/${user.profile_picture}`} className={classes.profile_picture}/>
+                        <Grid item className={classes.column + " " + classes.userinfo}>
                             <Typography className={classes.name}>{user.name} {user.lastname}</Typography>
                             <Typography className={classes.name}>{user.email}</Typography>
                         </Grid>

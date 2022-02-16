@@ -16,13 +16,6 @@ const useStyles = makeStyles((theme)=>({
         alignItems: "center"
     },
 
-    topLeft: {
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "flex-start",
-        alignItems: "flex-start"
-    },
-
     root: {
         height: "500px",
 
@@ -73,7 +66,7 @@ function UsersContainer(props) {
     ))
 
     return(
-        <Grid container className={classes.topLeft}>
+        <Grid container className={classes.column}>
             <User user={user} serviceList={serviceList}/>
         </Grid>
     )

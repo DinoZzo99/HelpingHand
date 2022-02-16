@@ -1,6 +1,6 @@
 import React from "react";
 import makeStyles from '@mui/styles/makeStyles';
-import { Button, Grid, TextField, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import Login from "../components/Login";
 
 const useStyles = makeStyles((theme)=>({
@@ -12,9 +12,7 @@ const useStyles = makeStyles((theme)=>({
     },
 
     root: {
-        position:"absolute",
-        left:0,
-        height:"100%",
+        
     },
 
     leftGrid: {

@@ -72,9 +72,8 @@ function Jobs(props) {
                             if(radioValue === 'popularity') return order === 'asc' ? (a.id > b.id ? 1 : -1) : (a.id > b.id ? 1 : -1);
                         }).map((post)=>{
                             let user = GetUserById(post.owner);
-                            let profile = user.profile_picture;
                             return(
-                                <JobContainer key={post.post_id} post={post} user={user} profile={profile}/>
+                                <JobContainer key={post.post_id} post={post} user={user}/>
                             )
                         })
                         // .sort((a, b) => b.title.toLocaleLowerCase() > a.title.toLocaleLowerCase() ? -1:1)

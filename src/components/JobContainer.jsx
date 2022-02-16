@@ -2,10 +2,7 @@ import React from "react";
 import { Typography } from "@mui/material";
 import makeStyles from '@mui/styles/makeStyles';
 import { Grid } from "@mui/material";
-import { Button } from "@mui/material";
-import arrowRightIcon from "../pictures/arrowRight2.png";
 import { useNavigate } from "react-router-dom";
-import { ModeCommentTwoTone } from "@material-ui/icons";
 
 
 const useStyles = makeStyles((theme)=>({
@@ -24,12 +21,19 @@ const useStyles = makeStyles((theme)=>({
     },
 
     jobContainer:{
-        alignItems:"flex-start",
-        height:"150px",
+        height:"170px",
         borderRadius: "4px",
-        marginBottom:"40px",
-        boxShadow: "0px 1px 5px #000000",
+        boxShadow: "0px 1px 3px #000000",
         fontFamily: ['"Raleway"','sans-serif'].join(','),
+        [theme.breakpoints.up('sm')]: {
+            borderRadius:"4px"
+        },
+        [theme.breakpoints.down('sm')]: {
+            borderRadius:"0"
+        },
+        [theme.breakpoints.down('xs')]:{
+            height:"250px"
+        },
         "&:hover":{
             cursor:"pointer"
         }
@@ -39,7 +43,10 @@ const useStyles = makeStyles((theme)=>({
         fontSize:"24px",
         marginLeft:"15px",
         fontFamily: ['"Raleway"','sans-serif'].join(','),
-        fontWeight:"bold"
+        fontWeight:"bold",
+        [theme.breakpoints.down('xs')]:{
+            fontSize:"20px"
+        }
     },
 
     jobBody:{
@@ -48,15 +55,27 @@ const useStyles = makeStyles((theme)=>({
         color:"black",
         margin:"15px 0 0 25px",
         textAlign: "left",
+        [theme.breakpoints.down('xs')]:{
+            fontSize:"14px"
+        }
     },
 
     jobUserInfo:{
-        height:"150px",
+        height:"170px",
         borderRadius:"4px 0 0 4px",
         padding:"10px",
         backgroundColor:"#007ea7",
         justifyContent:"space-between",
-        alignItems: "center"
+        alignItems: "center",
+        [theme.breakpoints.up('sm')]: {
+            borderRadius:"4px 0 0 4px"
+        },
+        [theme.breakpoints.down('md')]: {
+            borderRadius:"0"
+        },
+        [theme.breakpoints.down('xs')]:{
+            height:"90px"
+        }
     },
 
     profilePicture:{
@@ -77,12 +96,17 @@ const useStyles = makeStyles((theme)=>({
         fontFamily: ['"Raleway"','sans-serif'].join(","),
         color:"white",
         fontSize:"16px",
+        textAlign:"center",
+        [theme.breakpoints.down('xs')]:{
+            fontSize:"14px"
+        }
     },
 
     typographyUser2: {
         fontFamily: ['"Raleway"','sans-serif'].join(","),
         color:"white",
         fontSize:"12px",
+        textAlign:"center"
     },
     arrowIcon:{
         height:"80px",
@@ -104,18 +128,24 @@ function JobContainer(props){
     const date = new Date(props.isService ? props.post.date_from : props.post.date_due);
 
     return(
-        <Grid container className={classes.row + " " + classes.jobContainer}>
-            <Grid xs={2.5} container className={classes.column + " " + classes.jobUserInfo} onClick={() => navigate(`/users/${props.post.owner}`)}>
-                <img src={`../material/${props.profile}`} className={classes.profilePicture}/>
-                <Typography className={classes.typographyUser}>{props.user.username}</Typography>
-                <Typography className={classes.typographyUser2}>{date.getDate()}/{(date.getMonth() + 1).toString()}/{date.getFullYear()}</Typography>
+        <Grid container direction="row" justifyContent="center" className={classes.jobContainer}>
+            <Grid xl={props.width} lg={props.width+0.5} md={props.width} xs={props.width + 1} container item direction="row" justifyContent="center" className={classes.jobUserInfo} onClick={() => navigate(`/users/${props.post.owner}`)}>
+                <Grid xs={12} min={4} container item direction="row" justifyContent="center">
+                    <img src={`../material/${props.user.profile_picture}`} className={classes.profilePicture} alt="profile"/>
+                </Grid>
+                <Grid xs={12} min={4} container item direction="row" justifyContent="center">
+                    <Typography className={classes.typographyUser}>{props.user.username}</Typography>
+                </Grid>
+                <Grid xs={12} min={4} container item direction="row" justifyContent="center">
+                    <Typography className={classes.typographyUser2}>{date.getDate()}/{(date.getMonth() + 1).toString()}/{date.getFullYear()}</Typography>
+                </Grid>
             </Grid>
-            <Grid xs={8} container className={classes.column + " " + classes.jobInfo} onClick={() => navigate(`/service/${props.post.id}`)}>
-                <Grid container>
+            <Grid xl={12 - props.width} lg={11.5 - props.width} md={12 - props.width} xs={11 - props.width} container className={classes.column + " " + classes.jobInfo} onClick={() => navigate(`/${props.isService ? "service" : "donation"}/${props.post.id}`)}>
+                <Grid container className={classes.column}>
                     <Typography className={classes.jobHeader}>{props.post.title}</Typography>
                     <Typography className={classes.jobBody}>{props.post.secondary}</Typography>
+                    {props.isService ? null : <Typography className={classes.jobBody}>{props.post.payment}</Typography>}
                 </Grid>
-                {props.isService ? null : <Typography className={classes.jobBody}>{props.post.payment}</Typography>}
             </Grid>
         </Grid>
     )

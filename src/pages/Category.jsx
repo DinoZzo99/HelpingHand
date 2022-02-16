@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography } from "@mui/material";
 import makeStyles from '@mui/styles/makeStyles';
-import { Grid, Divider } from "@mui/material";
+import { Grid, Divider, Tabs, Tab } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import {GetServiceCategories, GetDonationCategories} from "../fakeAPI/FakeBackend";
@@ -53,11 +53,14 @@ const useStyles = makeStyles((theme)=>({
     },
 
     rootCat: {
-        padding:"20px",
+        padding:"10px",
     },
 
     categoryContainer: {
-        padding:"50px",
+        padding:"30px",
+        [theme.breakpoints.down('md')]:{
+            padding:"15px"
+        }
     },
 
     category: {
@@ -76,6 +79,9 @@ const useStyles = makeStyles((theme)=>({
         fontFamily:"'Raleway','sans-serif'",
         fontSize:"16px",
         padding:"8px",
+        [theme.breakpoints.down('md')]:{
+            fontSize:"14px"
+        }
     },
 
     titleContainer: {
@@ -88,6 +94,19 @@ const useStyles = makeStyles((theme)=>({
         fontSize:"32px",
         fontWeight:"bold",
         color:"#005c7a",
+        [theme.breakpoints.down('md')]:{
+            fontSize:"24px",
+        }
+    },
+
+    subtitle: {
+        fontFamily:"'Raleway','sans-serif'",
+        fontSize:"20px",
+        fontWeight:"bold",
+        color:"#007ea7",
+        [theme.breakpoints.down('md')]:{
+            fontSize:"18px"
+        }
     },
 }));
 
@@ -100,51 +119,45 @@ function Category(props) {
     const donations = GetDonationCategories();
 
     const [categories, setCategories] = React.useState(services);
+    const [value, setValue] = React.useState(0);
 
     const handleChange = (value) => {
         setExpanded(value);
+        setValue(value);
         if(value == 1) setCategories(donations);
         else setCategories(services);
     }
 
     return(
-        <Grid xs={12} container className={classes.column}>
-            <Grid container className={classes.titleContainer}>
-                <Typography className={classes.title}>Categories</Typography>
-            </Grid>
-            <Divider style={{width:"100%"}}/>
-            <Grid className={classes.row + " " + classes.tabs}>
-                <Grid
-                    container
-                    className={classes.column + " " + classes.tab + " " + classes.tabLeft + " " + `${expanded ? null : classes.tabSelected}`}
-                    onClick={()=>handleChange(0)}
-                >
-                    Service
+        <Grid container direction="row" justifyContent="center">
+            <Grid xl={7} lg={8} md={11} container item direction="row" justifyContent="center">
+                <Grid container item className={classes.titleContainer}>
+                    <Typography className={classes.title}>Categories</Typography>
                 </Grid>
-                <Grid
-                    container
-                    className={classes.column + " " + classes.tab + " " + classes.tabRight + " " + `${expanded ? classes.tabSelected : null}`}
-                    onClick={()=>handleChange(1)}
-                >
-                    Donation
+                <Divider style={{width:"100%"}}/>
+                <Grid sm={8} xs={11} container item>
+                    <Tabs value={value}>
+                        <Tab value={0} label="Services" onClick={() => handleChange(0)} className={classes.subtitle}/>
+                        <Tab value={1} label="Donations" onClick={() => handleChange(1)} className={classes.subtitle}/>
+                    </Tabs>
                 </Grid>
-            </Grid>
-            <Grid container className={classes.row + " " + classes.rootCat}>
-                {
-                    categories.map((category, index)=>{
-                        return (
-                            <Grid xs={4} container className={classes.column + " " + classes.categoryContainer}>
-                                <Grid container className={classes.column + " " + classes.category} onClick={() => navigate(`../${expanded == 1 ? "donations" : "services"}/${category.category_id}`)}>
-                                    <Grid container className={classes.iconContainer}>
+                <Grid container className={classes.row + " " + classes.rootCat}>
+                    {
+                        categories.map((category, index)=>{
+                            return (
+                                <Grid sm={4} xs={6} container className={classes.column + " " + classes.categoryContainer}>
+                                    <Grid container className={classes.column + " " + classes.category} onClick={() => navigate(`../${expanded == 1 ? "donations" : "services"}/${category.category_id}`)}>
+                                        <Grid container item className={classes.iconContainer}>
+                                        </Grid>
+                                        <Typography className={classes.categoryTypo}>
+                                            {category.category_name}
+                                        </Typography>
                                     </Grid>
-                                    <Typography className={classes.categoryTypo}>
-                                        {category.category_name}
-                                    </Typography>
                                 </Grid>
-                            </Grid>
-                        )
-                    })
-                }
+                            )
+                        })
+                    }
+                </Grid>
             </Grid>
         </Grid>
     )

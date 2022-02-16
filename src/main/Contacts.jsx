@@ -22,7 +22,10 @@ const useStyle = makeStyles((theme)=>({
         right:"0px",
         boxShadow: "0px 1px 4px #000000",
         borderRadius:"5px 0px 0px 0px",
-        zIndex:"100"
+        zIndex:"100",
+        [theme.breakpoints.down('sm')]:{
+            display:"none"
+        }
     },
 
     row: {

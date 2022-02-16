@@ -29,10 +29,15 @@ const useStyles = makeStyles((theme)=>({
     
     title: {
         fontFamily: "'Raleway','sans-serif'",
-        fontSize:"24px",
         fontWeight: 600,
         margin: "5px 0 5px 20px",
         color: "#005c7a",
+        [theme.breakpoints.only('xl')]:{
+            fontSize:"24px",
+        },
+        [theme.breakpoints.only('lg')]:{
+            fontSize:"20px",
+        }
     },
 }));
 
@@ -45,7 +50,7 @@ function SearchTabsCategory(props) {
         {
             props.categories.map((category) => {
                 return(
-                    <Grid container className={classes.row + " " + classes.root} onClick={() => navigate(`/category/${category.category_id}`)}>
+                    <Grid container className={classes.row + " " + classes.root} onClick={() => navigate(`/services/${category.category_id}`)}>
                             <Typography className={classes.title}>{category.category_name}</Typography>
                     </Grid>
                 )

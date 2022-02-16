@@ -25,23 +25,11 @@ const useStyles = makeStyles((theme)=>({
         alignItems:"center",
     },
 
-    topLeft:{
-        display: "flex",
-        flexDirection: "row",
-        justifyContent:"flex-start",
-        alignItems:"flex-start",
-        position:"relative",
-        top:"0"
-    },
-
-    jobsGrid: {
-        padding:"0 80px"
-    },
-
     filter: {
-        position: "absolute",
-        right:"-330px",
-        top:"50px"
+        padding:"40px",
+        [theme.breakpoints.down('xl')]:{
+            visibility:"hidden",
+        }
     },
     
     title: {
@@ -50,6 +38,9 @@ const useStyles = makeStyles((theme)=>({
         fontWeight:"bold",
         color:"#005c7a",
         margin:"20px 0 0 20px",
+        [theme.breakpoints.down('md')]:{
+            fontSize:"24px",
+        }
     },
 
     subtitle: {
@@ -58,6 +49,10 @@ const useStyles = makeStyles((theme)=>({
         fontWeight:"bold",
         color:"#007ea7",
         margin:"5px 0 20px 40px",
+        [theme.breakpoints.down('md')]:{
+            fontSize:"18px",
+            margin:"5px 0 5px 30px"
+        }
     },
 
     pagination: {
@@ -68,6 +63,13 @@ const useStyles = makeStyles((theme)=>({
         borderRadius: "4px",
         marginBottom:"40px",
         boxShadow: "0px 1px 5px #000000",
+        [theme.breakpoints.down('sm')]:{
+            boxShadow:"0 0 0 white",
+            marginBottom:"0"
+        },
+        [theme.breakpoints.down('md')]:{
+            borderRadius:"0"
+        }
     }
 }));
 
@@ -105,18 +107,19 @@ function Services(props) {
     const category = GetCategoryById(id);
 
     return (
-        <Grid container className={classes.topLeft}>
-            <Grid container className={classes.column}>
-                <Grid container>
+        <Grid container>
+            <Grid xl={2.5} lg={2} md={0.5} min={0} item></Grid>
+            <Grid xl={7} lg={8} md={11} container item direction="row" justifyContent="center">
+                <Grid container item>
                     <Typography className={classes.title}>{isService ? "Services" : "Donations"}</Typography>
                 </Grid>
                 <Divider style={{width:"100%"}}/>
-                <Grid container>
+                <Grid container item>
                     <Typography className={classes.subtitle}>Showing {isService ? "services" : "donations"} {1 + 10 * (page - 1)}-{(11 + 10 * (page - 1)) < data.length ? (11 + 10 * (page - 1)) : data.length} / {data.length} {id ? `in "${category.category_name}"` : null}</Typography>
                 </Grid>
-                <Grid container className={classes.column + " " + classes.jobsGrid}>
+                <Grid container className={classes.jobsGrid} direction="row" justifyContent="center">
                     {
-                        data.length > 10 ? <Grid container className={classes.column + " " + classes.container}>
+                        data.length > 10 ? <Grid container item className={classes.column + " " + classes.container}>
                             <Pagination color="primary" className={classes.pagination} count={Math.round(data.length/10) >= data.length/10 ? Math.round(data.length/10) : (Math.round(data.length/10 + 1))} page={page} onChange={handlePage} />
                         </Grid> : null
                     }
@@ -138,7 +141,9 @@ function Services(props) {
                             let user = GetUserById(post.owner);
                             let profile = user.profile_picture;
                             return(
-                                <JobContainer key={post.id} post={post} user={user} profile={profile} isService={isService}/>
+                                <Grid md={12} sm={10} container item style={{padding:"20px 0"}}>
+                                    <JobContainer width={2.5} key={post.id} post={post} user={user} isService={isService}/>
+                                </Grid>
                             )
                         })
                     }
@@ -149,7 +154,7 @@ function Services(props) {
                     }
                 </Grid>
             </Grid>
-            <Grid xl={3} lg={2} container className={classes.column + " " + classes.filter}>
+            <Grid xl={2.5} lg={2} container className={classes.column + " " + classes.filter}>
                 <JobFilter handleFilter={handleFilter} radioValue={radioValue} handleOrder={handleOrder} order={order}/>
             </Grid>
         </Grid>

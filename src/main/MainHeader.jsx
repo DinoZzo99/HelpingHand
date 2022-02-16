@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme)=>({
     appbar: {
-        //main 
+        //main
         backgroundColor: "#007ea7",
         // [theme.breakpoints.only('xs')]: {
         //     backgroundColor: "yellow",
@@ -26,11 +26,13 @@ const useStyles = makeStyles((theme)=>({
         // [theme.breakpoints.only('xl')]: {
         //     backgroundColor: "darkblue",
         // },
+        [theme.breakpoints.down('sm')]:{
+            display:"none"
+        }
     },
 
     logoImage:{
-        height: "140px",
-        width:"140px",
+        height:"150px"
     },
 
     title: {
@@ -61,10 +63,10 @@ function MainHeader(props) {
         <AppBar position="static" className={classes.appbar}>
             <Grid container className={classes.column}>
                 <Grid container className={classes.rowStart}>
-                    <Grid xs={2} container className={classes.column}>
+                    <Grid xs={2} container item className={classes.column}>
                         <img className={classes.logoImage} src={logo}/>
                     </Grid>
-                    <Grid xs={4} container className={classes.rowStart}>
+                    <Grid xs={10} container item className={classes.rowStart}>
                         <Typography className={classes.title}>Helping Hand</Typography>
                     </Grid>
                 </Grid>

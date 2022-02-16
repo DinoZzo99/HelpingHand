@@ -36,6 +36,12 @@ const useStyles = makeStyles((theme)=>({
     typography: {
         fontSize:"14px"
     },
+
+    hoverPointer: {
+        "&:hover":{
+            cursor:"pointer"
+        }
+    }
     
 }));
 
@@ -103,7 +109,7 @@ function Login(props) {
                 >Login</Button>
                 <Grid container>
                     <Typography className={classes.typography}>Not a member?</Typography>
-                    <Typography className={classes.typography} color="primary">Register here.</Typography>
+                    <Typography className={classes.typography + " " + classes.hoverPointer} color="primary" onClick={() => navigate("/register")}>Register here.</Typography>
                 </Grid>
             </Grid>
         </Grid>
